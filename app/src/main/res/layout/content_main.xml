@@ -18,7 +18,7 @@
         android:layout_height="match_parent">
 
         <ImageView
-            android:id="@+id/iv_dotline"
+            android:id="@+id/iv_background"
             android:layout_width="201dp"
             android:layout_height="314dp"
             android:src="@drawable/dotted_retangle"
@@ -34,8 +34,8 @@
             android:layout_height="40dp"
             android:layout_marginLeft="32dp"
             android:layout_marginTop="90dp"
-            app:layout_constraintLeft_toLeftOf="@+id/iv_dotline"
-            app:layout_constraintTop_toTopOf="@+id/iv_dotline"
+            app:layout_constraintLeft_toLeftOf="@+id/iv_background"
+            app:layout_constraintTop_toTopOf="@+id/iv_background"
             sothree:srcCompat="@android:drawable/ic_menu_gallery"
             android:layout_marginStart="32dp"/>
 
@@ -47,7 +47,7 @@
             android:layout_marginTop="8dp"
             android:src="@android:drawable/ic_menu_camera"
             app:layout_constraintBottom_toBottomOf="@+id/icon_gallery"
-            app:layout_constraintRight_toRightOf="@+id/iv_dotline"
+            app:layout_constraintRight_toRightOf="@+id/iv_background"
             app:layout_constraintTop_toTopOf="@+id/icon_gallery"
             app:layout_constraintVertical_bias="1.0"
             android:layout_marginEnd="32dp"/>
