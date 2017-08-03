@@ -21,7 +21,7 @@
             android:id="@+id/iv_background"
             android:layout_width="201dp"
             android:layout_height="314dp"
-            android:src="@drawable/dotted_retangle"
+            android:src="@drawable/empty_image"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
