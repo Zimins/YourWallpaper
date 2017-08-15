@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <PreferenceCategory
+    <!--<PreferenceCategory-->
         android:title="general"
         android:key="key_general">
         <EditTextPreference
@@ -20,14 +20,14 @@
             android:defaultValue="true"
             android:summaryOff="off"
             android:summaryOn="on"/>
-    </PreferenceCategory>
-    <PreferenceCategory
-        android:title="special"
-        android:key="key_special">
+    <!--</PreferenceCategory>-->
+    <!--<PreferenceCategory-->
+        <!--android:title="special"-->
+        <!--android:key="key_special">-->
         <EditTextPreference
             android:key="key_another_name"
             android:title="User Name"
             android:defaultValue="andy"
             android:summary="andy"/>
-    </PreferenceCategory>
+    <!--</PreferenceCategory>-->
 </PreferenceScreen>
