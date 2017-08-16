@@ -3,6 +3,7 @@ package com.zapps.yourwallpaper;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.google.firebase.database.ChildEventListener;
@@ -15,49 +16,73 @@ public class DataListenService extends Service {
 
     String myNumber;
     String partnerNumber;
+    String mateKey;
 
     public DataListenService() {
     }
 
+    @Nullable
     @Override
     public IBinder onBind(Intent intent) {
+        return null;
+    }
 
-        // TODO: Return the communication channel to the service.
-        myNumber = intent.getStringExtra("myNumber");
-        partnerNumber = intent.getStringExtra("partnerNumber");
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
 
-        DatabaseReference userReference = FirebaseDatabase.getInstance().getReference("users");
+        Log.d("datalisten", "service stated");
+        myNumber = intent.getStringExtra("userPhone");
+        Log.d("datalisten", myNumber);
+        partnerNumber = intent.getStringExtra("partnerPhone");
+
+        final DatabaseReference userReference = FirebaseDatabase.getInstance().getReference("users");
         userReference
-                .orderByChild("phone")
-                .equalTo("01000000000")
+                .orderByChild("userPhone")
+                .equalTo(myNumber)
                 .addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                    @Override
+                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 
-            }
+                        User user = dataSnapshot.getValue(User.class);
+                        Log.d("service", "child added");
+                        if (user.isCouple) {
+                            userReference.child(user.getMateKey()).child("isCouple").setValue(true);
+                            userReference.child(user.getMateKey()).child("mateKey").setValue(dataSnapshot
+                                    .getKey());
+                        }
+                    }
 
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                User user = dataSnapshot.getValue(User.class);
-                Log.d("servicemessage", user.toString());
-            }
+                    @Override
+                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                        Log.d("service", "child changed");
 
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                        User user = dataSnapshot.getValue(User.class);
+                        userReference.child(user.getMateKey()).child("isCouple").setValue(true);
 
-            }
+                    }
 
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                    @Override
+                    public void onChildRemoved(DataSnapshot dataSnapshot) {
 
-            }
+                    }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+                    @Override
+                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
 
-            }
-        });
+                    }
 
-        throw new UnsupportedOperationException("Not yet implemented");
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+        return START_REDELIVER_INTENT;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d("datalisten", "end");
     }
 }

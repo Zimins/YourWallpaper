@@ -28,6 +28,7 @@ public class RegisterActivity extends AppCompatActivity {
     String nickname;
     String userNumber;
     String partnerNumber;
+    String userKey;
 
     User user;
     User partner;
@@ -77,6 +78,8 @@ public class RegisterActivity extends AppCompatActivity {
                 writeNewUser(nickname, userNumber, partnerNumber);
                 updateToCouple(partnerNumber);
                 Intent intent = new Intent(RegisterActivity.this, WaitingActivity.class);
+                intent.putExtra("userPhone", userNumber);
+                intent.putExtra("partnerPhone", partnerNumber);
                 startActivity(intent);
             }
         });
@@ -84,17 +87,30 @@ public class RegisterActivity extends AppCompatActivity {
 
     private void writeNewUser(String nickname, String phoneNumber, String partnerNumber) {
         Log.i("write", "new user");
-        user = new User(phoneNumber, partnerNumber);
-        reference.child(nickname).setValue(user);
+        user = new User(nickname, phoneNumber, partnerNumber);
+        DatabaseReference newUserRef = reference.push();
+        newUserRef.setValue(user);
+        userKey = newUserRef.getKey();
+        Log.d("push key", userKey);
     }
+
     private void updateToCouple(String phoneNumber) {
         Log.i("update db", "flag on");
-        reference.orderByChild("phone").equalTo("01012341234").addChildEventListener(new ChildEventListener() {
+        reference
+                .orderByChild("userPhone")
+                .equalTo(phoneNumber)
+                .addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                //찾고 해당 키의 밸류 를 변경
                 partner = dataSnapshot.getValue(User.class);
-                user.setIsCouple(true);
-                reference.child(partner.getNickname()).setValue(user);
+                String mateKey = dataSnapshot.getKey();
+                Log.d("register", mateKey);
+                if (!partner.isCouple) {
+                    partner.setIsCouple(true);
+                    reference.child(mateKey).child("isCouple").setValue(true);
+                    reference.child(mateKey).child("mateKey").setValue(userKey);
+                }
             }
 
             @Override

@@ -6,22 +6,25 @@ package com.zapps.yourwallpaper;
 
 public class User {
     public String nickname;
-    public String phone;
-    public String mate;
+    public String userPhone;
+    public String matePhone;
+    private String mateKey;
     public boolean isCouple;
 
     public User(){}
 
-    public User(String phone, String mate) {
-        this.phone = phone;
-        this.mate = mate;
+    public User(String nickname, String userPhone, String matePhone) {
+        this.nickname = nickname;
+        this.userPhone = userPhone;
+        this.matePhone = matePhone;
     }
 
     @Override
     public String toString() {
         return "User{" +
-                "phone='" + phone + '\'' +
-                ", mate='" + mate + '\'' +
+                "nickname='" + nickname + '\'' +
+                ", userPhone='" + userPhone + '\'' +
+                ", matePhone='" + matePhone + '\'' +
                 ", isCouple=" + isCouple +
                 '}';
     }
@@ -32,5 +35,9 @@ public class User {
 
     public void setIsCouple(boolean isCouple) {
         this.isCouple = isCouple;
+    }
+
+    public String getMateKey() {
+        return mateKey;
     }
 }
