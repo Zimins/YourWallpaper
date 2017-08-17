@@ -8,4 +8,7 @@
     <string name="my_history">my history</string>
     <string name="key_user_name">key_user_name</string>
     <string name="default_username">please register</string>
+
+    <string name="key_userPhone">userPhone</string>
+    <string name="key_partnerPhone">partnerPhone</string>
 </resources>

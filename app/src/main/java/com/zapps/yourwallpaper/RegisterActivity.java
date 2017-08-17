@@ -26,8 +26,8 @@ public class RegisterActivity extends AppCompatActivity {
     EditText partnerNumInput;
 
     String nickname;
-    String userNumber;
-    String partnerNumber;
+    String userPhone;
+    String partnerPhone;
     String userKey;
 
     User user;
@@ -53,33 +53,33 @@ public class RegisterActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 nickname = nicknameInput.getText().toString();
-                userNumber = userNumInput.getText().toString();
-                partnerNumber = partnerNumInput.getText().toString();
+                userPhone= userNumInput.getText().toString();
+                partnerPhone = partnerNumInput.getText().toString();
 
                 if (nickname.equals("")) {
                     nicknameInput.setError("empty nickname!");
                     return;
                 }
                 // it should change to more hard detect
-                if (userNumber.equals("")) {
+                if (userPhone.equals("")) {
                     userNumInput.setError("wrong number!");
                     return;
                 }
 
-                if(!PhoneNumberUtils.isGlobalPhoneNumber(userNumber)) {
+                if(!PhoneNumberUtils.isGlobalPhoneNumber(userPhone)) {
                     userNumInput.setError("wrong number!");
                     return;
                 }
 
-                if (partnerNumber.equals("")) {
+                if (partnerPhone.equals("")) {
                     partnerNumInput.setError("wrong number!");
                     return;
                 }
-                writeNewUser(nickname, userNumber, partnerNumber);
-                updateToCouple(partnerNumber);
+                writeNewUser(nickname, userPhone, partnerPhone);
+                updateToCouple(partnerPhone);
                 Intent intent = new Intent(RegisterActivity.this, WaitingActivity.class);
-                intent.putExtra("userPhone", userNumber);
-                intent.putExtra("partnerPhone", partnerNumber);
+                intent.putExtra(getString(R.string.key_userPhone), userPhone);
+                intent.putExtra(getString(R.string.key_partnerPhone), partnerPhone);
                 startActivity(intent);
             }
         });
@@ -94,11 +94,11 @@ public class RegisterActivity extends AppCompatActivity {
         Log.d("push key", userKey);
     }
 
-    private void updateToCouple(String phoneNumber) {
+    private void updateToCouple(String partnerPhone) {
         Log.i("update db", "flag on");
         reference
                 .orderByChild("userPhone")
-                .equalTo(phoneNumber)
+                .equalTo(partnerPhone)
                 .addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -108,8 +108,9 @@ public class RegisterActivity extends AppCompatActivity {
                 Log.d("register", mateKey);
                 if (!partner.isCouple) {
                     partner.setIsCouple(true);
-                    reference.child(mateKey).child("isCouple").setValue(true);
                     reference.child(mateKey).child("mateKey").setValue(userKey);
+                    reference.child(mateKey).child("isCouple").setValue(true);
+
                 }
             }
 

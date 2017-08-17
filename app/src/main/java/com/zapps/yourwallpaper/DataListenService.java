@@ -14,8 +14,8 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class DataListenService extends Service {
 
-    String myNumber;
-    String partnerNumber;
+    String userPhone;
+    String partnerPhone;
     String mateKey;
 
     public DataListenService() {
@@ -31,20 +31,21 @@ public class DataListenService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
 
         Log.d("datalisten", "service stated");
-        myNumber = intent.getStringExtra("userPhone");
-        Log.d("datalisten", myNumber);
-        partnerNumber = intent.getStringExtra("partnerPhone");
+        userPhone = intent.getStringExtra(getString(R.string.key_userPhone));
+        Log.d("datalisten", userPhone);
+        partnerPhone = intent.getStringExtra(getString(R.string.key_partnerPhone));
 
         final DatabaseReference userReference = FirebaseDatabase.getInstance().getReference("users");
         userReference
-                .orderByChild("userPhone")
-                .equalTo(myNumber)
+                .orderByChild(getString(R.string.key_userPhone))
+                .equalTo(userPhone)
                 .addChildEventListener(new ChildEventListener() {
                     @Override
                     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 
                         User user = dataSnapshot.getValue(User.class);
                         Log.d("service", "child added");
+                        Log.d("service", user.getNickname());
                         if (user.isCouple) {
                             userReference.child(user.getMateKey()).child("isCouple").setValue(true);
                             userReference.child(user.getMateKey()).child("mateKey").setValue(dataSnapshot
@@ -55,9 +56,13 @@ public class DataListenService extends Service {
                     @Override
                     public void onChildChanged(DataSnapshot dataSnapshot, String s) {
                         Log.d("service", "child changed");
-
                         User user = dataSnapshot.getValue(User.class);
-                        userReference.child(user.getMateKey()).child("isCouple").setValue(true);
+                        Log.d("service", user.getNickname());
+                        if (!user.isCouple) {
+                            userReference.child(user.getMateKey()).child("isCouple").setValue(true);
+                            userReference.child(user.getMateKey()).child("mateKey").setValue(dataSnapshot
+                                    .getKey());
+                        }
 
                     }
 

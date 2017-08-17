@@ -20,8 +20,8 @@ public class WaitingActivity extends AppCompatActivity {
         Intent intent = getIntent();
 
         Intent waitService = new Intent(WaitingActivity.this, DataListenService.class);
-        waitService.putExtra("userPhone",intent.getStringExtra("userPhone"));
-        waitService.putExtra("partnerPhone", intent.getStringExtra("partnerPhone"));
+        waitService.putExtra(getString(R.string.key_userPhone),intent.getStringExtra("userPhone"));
+        waitService.putExtra(getString(R.string.key_partnerPhone), intent.getStringExtra("partnerPhone"));
         Log.d("wait", intent.getStringExtra("userPhone"));
 
         startService(waitService);
