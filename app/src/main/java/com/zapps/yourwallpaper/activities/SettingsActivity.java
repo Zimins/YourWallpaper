@@ -1,4 +1,4 @@
-package com.zapps.yourwallpaper;
+package com.zapps.yourwallpaper.activities;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -6,6 +6,8 @@ import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+
+import com.zapps.yourwallpaper.R;
 
 /**
  * Created by Zimincom on 2017. 8. 3..

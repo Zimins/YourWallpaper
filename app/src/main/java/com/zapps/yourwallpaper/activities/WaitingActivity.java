@@ -1,4 +1,4 @@
-package com.zapps.yourwallpaper;
+package com.zapps.yourwallpaper.activities;
 
 import android.app.ActivityManager;
 import android.content.Context;
@@ -7,6 +7,9 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+
+import com.zapps.yourwallpaper.R;
+import com.zapps.yourwallpaper.services.DataListenService;
 
 public class WaitingActivity extends AppCompatActivity {
 

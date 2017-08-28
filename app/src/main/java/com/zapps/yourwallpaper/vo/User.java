@@ -1,4 +1,4 @@
-package com.zapps.yourwallpaper;
+package com.zapps.yourwallpaper.vo;
 
 /**
  * Created by Zimincom on 2017. 8. 15..

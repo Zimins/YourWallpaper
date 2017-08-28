@@ -1,4 +1,4 @@
-package com.zapps.yourwallpaper;
+package com.zapps.yourwallpaper.activities;
 
 import android.content.Context;
 import android.content.Intent;
@@ -16,6 +16,8 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.zapps.yourwallpaper.R;
+import com.zapps.yourwallpaper.vo.User;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -44,7 +46,6 @@ public class RegisterActivity extends AppCompatActivity {
         reference = database.getReference("users");
 
         confirmButton = (Button) findViewById(R.id.button_confirm);
-
         nicknameInput = (EditText) findViewById(R.id.input_nickname);
         userNumInput = (EditText) findViewById(R.id.input_my_nunber);
         partnerNumInput = (EditText) findViewById(R.id.input_partner_number);
@@ -89,12 +90,10 @@ public class RegisterActivity extends AppCompatActivity {
 
     private void writeNewUser(String nickname, String phoneNumber, String partnerNumber) {
         //check vaild
-        Log.i("write", "new user");
         user = new User(nickname, phoneNumber, partnerNumber);
         DatabaseReference newUserRef = reference.push();
         newUserRef.setValue(user);
         userKey = newUserRef.getKey();
-        Log.d("push key", userKey);
 
         SharedPreferences pref = getSharedPreferences(getString(R.string.key_preference_file), Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();

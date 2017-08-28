@@ -1,10 +1,12 @@
-package com.zapps.yourwallpaper;
+package com.zapps.yourwallpaper.activities;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+
+import com.zapps.yourwallpaper.R;
 
 public class IntroActivity extends AppCompatActivity {
 
