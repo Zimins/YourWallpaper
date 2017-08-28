@@ -1,7 +1,6 @@
 package com.zapps.yourwallpaper.services;
 
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.IBinder;
@@ -13,6 +12,8 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.zapps.yourwallpaper.Constants;
+import com.zapps.yourwallpaper.PrefLib;
 import com.zapps.yourwallpaper.R;
 import com.zapps.yourwallpaper.vo.User;
 
@@ -36,15 +37,14 @@ public class DataListenService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
-        pref = getSharedPreferences(getString(R.string.key_preference_file),
-                Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = pref.edit();
-        editor.putBoolean(getString(R.string.key_isWaiting), true);
-        editor.apply();
+        PrefLib.init(DataListenService.this);
+        PrefLib.putBoolean(Constants.KEY_ISWAITING, true);
 
-        userKey = pref.getString(getString(R.string.key_user), "");
+        userKey = PrefLib.getString(Constants.KEY_USERID, "");
         userPhone = intent.getStringExtra(getString(R.string.key_userPhone));
         partnerPhone = intent.getStringExtra(getString(R.string.key_partnerPhone));
+        //문자열 상수 인터페이스로 전환
+
 
         final DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("users");
         Log.d("userkeyinservice", userKey);
@@ -65,7 +65,9 @@ public class DataListenService extends Service {
                     //add mate key to my mate
                     userRef.child(user.getMateKey()).child("mateKey").setValue(myKey);
                     userRef.child(user.getMateKey()).child("isCouple").setValue(true);
-                    //파일 데이터가 바뀌면 나의 커플 상태를 변경
+
+                    PrefLib.putBoolean(Constants.KEY_ISCOUPLE, true);
+
                     Log.d("matekey", user.getMateKey());
                 }
             }
@@ -87,9 +89,6 @@ public class DataListenService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        SharedPreferences.Editor editor = pref.edit();
-        editor.putBoolean(getString(R.string.key_isWaiting), false);
-        editor.apply();
-        Log.d("datalisten", "end");
+        PrefLib.putBoolean(Constants.KEY_ISWAITING, false);
     }
 }

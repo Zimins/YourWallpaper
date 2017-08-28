@@ -1,8 +1,6 @@
 package com.zapps.yourwallpaper.activities;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.telephony.PhoneNumberUtils;
@@ -16,6 +14,8 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.zapps.yourwallpaper.Constants;
+import com.zapps.yourwallpaper.PrefLib;
 import com.zapps.yourwallpaper.R;
 import com.zapps.yourwallpaper.vo.User;
 
@@ -95,15 +95,14 @@ public class RegisterActivity extends AppCompatActivity {
         newUserRef.setValue(user);
         userKey = newUserRef.getKey();
 
-        SharedPreferences pref = getSharedPreferences(getString(R.string.key_preference_file), Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = pref.edit();
-        editor.putString(getString(R.string.key_nickname), nickname);
-        editor.putString(getString(R.string.key_user), userKey);
-        editor.putString(getString(R.string.key_phoneNumber), phoneNumber);
-        editor.putString(getString(R.string.key_partnerNumber), partnerNumber);
-        editor.putBoolean(getString(R.string.key_isRegister), true);
-        editor.putBoolean(getString(R.string.key_isCouple), false);
-        editor.apply();
+        PrefLib.putString(Constants.KEY_NICKNAME, nickname);
+        PrefLib.putString(Constants.KEY_USERID, userKey);
+        PrefLib.putString(Constants.KEY_PHONENUMBER, phoneNumber);
+        PrefLib.putString(Constants.KEY_PARTNERNUMBER, partnerNumber);
+
+        PrefLib.putBoolean(Constants.KEY_ISREGISTER, true);
+        PrefLib.putBoolean(Constants.KEY_ISCOUPLE, false);
+        //string constant problem
     }
 
     private void updateToCouple(String partnerPhone) {

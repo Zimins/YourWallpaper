@@ -18,5 +18,5 @@
     <string name="key_preference_file">preference</string>
     <string name="key_isRegister">isRegister</string>
     <string name="key_isWaiting">isWaiting</string>
-    <string name="key_user">key_user</string>
+    <string name="key_user">userID</string>
 </resources>
