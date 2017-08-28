@@ -98,6 +98,7 @@ public class RegisterActivity extends AppCompatActivity {
         SharedPreferences pref = getSharedPreferences(getString(R.string.key_preference_file), Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
         editor.putString(getString(R.string.key_nickname), nickname);
+        editor.putString(getString(R.string.key_user), userKey);
         editor.putString(getString(R.string.key_phoneNumber), phoneNumber);
         editor.putString(getString(R.string.key_partnerNumber), partnerNumber);
         editor.putBoolean(getString(R.string.key_isRegister), true);

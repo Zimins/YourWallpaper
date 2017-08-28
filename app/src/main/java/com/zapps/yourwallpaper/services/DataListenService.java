@@ -20,6 +20,7 @@ public class DataListenService extends Service {
 
     String userPhone;
     String partnerPhone;
+    String userKey;
     String mateKey;
     SharedPreferences pref;
 
@@ -41,60 +42,47 @@ public class DataListenService extends Service {
         editor.putBoolean(getString(R.string.key_isWaiting), true);
         editor.apply();
 
-        Log.d("datalisten", "service stated");
+        userKey = pref.getString(getString(R.string.key_user), "");
         userPhone = intent.getStringExtra(getString(R.string.key_userPhone));
-        Log.d("datalisten", userPhone);
         partnerPhone = intent.getStringExtra(getString(R.string.key_partnerPhone));
 
-        final DatabaseReference userReference = FirebaseDatabase.getInstance().getReference("users");
-        userReference
-                .orderByChild(getString(R.string.key_userPhone))
-                .equalTo(userPhone)
-                .addChildEventListener(new ChildEventListener() {
-                    @Override
-                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+        final DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("users");
+        Log.d("userkeyinservice", userKey);
 
-                        User user = dataSnapshot.getValue(User.class);
-                        Log.d("service", "child added");
-                        Log.d("service", user.getNickname());
-                        if (user.isCouple) {
-                            userReference.child(user.getMateKey()).child("isCouple").setValue(true);
-                            userReference.child(user.getMateKey()).child("mateKey").setValue(dataSnapshot
-                                    .getKey());
-                        }
-                    }
+        userRef.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {}
 
-                    @Override
-                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                        User user = dataSnapshot.getValue(User.class);
-                        Log.d("service", "child changed");
-                        Log.d("service", user.getNickname());
-                        if (!user.isCouple) {
-                            userReference.child(user.getMateKey()).child("isCouple").setValue(true);
-                            userReference.child(user.getMateKey()).child("mateKey").setValue(dataSnapshot
-                                    .getKey());
-                        }
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                Log.d("valueevent", userKey);
+                User user = dataSnapshot.getValue(User.class);
 
-                    }
+                String myKey = dataSnapshot.getKey();
+                Log.d("chiledchanged", myKey);
 
-                    @Override
-                    public void onChildRemoved(DataSnapshot dataSnapshot) {
+                if (user.getMateKey() != null) {
+                    //add mate key to my mate
+                    userRef.child(user.getMateKey()).child("mateKey").setValue(myKey);
+                    userRef.child(user.getMateKey()).child("isCouple").setValue(true);
+                    //파일 데이터가 바뀌면 나의 커플 상태를 변경
+                    Log.d("matekey", user.getMateKey());
+                }
+            }
 
-                    }
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {}
 
-                    @Override
-                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
 
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
+        });
 
         return START_REDELIVER_INTENT;
     }
+
 
     @Override
     public void onDestroy() {

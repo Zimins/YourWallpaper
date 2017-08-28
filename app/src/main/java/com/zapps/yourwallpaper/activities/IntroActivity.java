@@ -18,13 +18,18 @@ public class IntroActivity extends AppCompatActivity {
         SharedPreferences pref = getSharedPreferences(getString(R.string.key_preference_file),
                 Context.MODE_PRIVATE);
         boolean isRegister = pref.getBoolean(getString(R.string.key_isRegister),false);
+        boolean isCouple = pref.getBoolean(getString(R.string.key_isCouple), false);
 
         Intent intent;
-        if (isRegister) {
+
+        if (isCouple) {
+            intent = new Intent(IntroActivity.this, MainActivity.class);
+        } else if (isRegister) {
             intent = new Intent(IntroActivity.this, WaitingActivity.class);
         } else {
             intent = new Intent(IntroActivity.this, RegisterActivity.class);
         }
+
         startActivity(intent);
     }
 }

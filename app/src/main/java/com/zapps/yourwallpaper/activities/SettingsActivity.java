@@ -9,10 +9,6 @@ import android.view.MenuItem;
 
 import com.zapps.yourwallpaper.R;
 
-/**
- * Created by Zimincom on 2017. 8. 3..
- */
-
 public class SettingsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
