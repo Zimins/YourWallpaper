@@ -55,8 +55,8 @@ public class DataListenService extends Service {
 
                     @Override
                     public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                        Log.d("service", "child changed");
                         User user = dataSnapshot.getValue(User.class);
+                        Log.d("service", "child changed");
                         Log.d("service", user.getNickname());
                         if (!user.isCouple) {
                             userReference.child(user.getMateKey()).child("isCouple").setValue(true);
