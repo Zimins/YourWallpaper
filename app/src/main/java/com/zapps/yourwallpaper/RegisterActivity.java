@@ -1,6 +1,8 @@
 package com.zapps.yourwallpaper;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.telephony.PhoneNumberUtils;
@@ -86,12 +88,22 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void writeNewUser(String nickname, String phoneNumber, String partnerNumber) {
+        //check vaild
         Log.i("write", "new user");
         user = new User(nickname, phoneNumber, partnerNumber);
         DatabaseReference newUserRef = reference.push();
         newUserRef.setValue(user);
         userKey = newUserRef.getKey();
         Log.d("push key", userKey);
+
+        SharedPreferences pref = getSharedPreferences(getString(R.string.key_preference_file), Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString(getString(R.string.key_nickname), nickname);
+        editor.putString(getString(R.string.key_phoneNumber), phoneNumber);
+        editor.putString(getString(R.string.key_partnerNumber), partnerNumber);
+        editor.putBoolean(getString(R.string.key_isRegister), true);
+        editor.putBoolean(getString(R.string.key_isCouple), false);
+        editor.apply();
     }
 
     private void updateToCouple(String partnerPhone) {
@@ -110,7 +122,6 @@ public class RegisterActivity extends AppCompatActivity {
                     partner.setIsCouple(true);
                     reference.child(mateKey).child("mateKey").setValue(userKey);
                     reference.child(mateKey).child("isCouple").setValue(true);
-
                 }
             }
 

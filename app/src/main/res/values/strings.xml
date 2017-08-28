@@ -11,4 +11,11 @@
 
     <string name="key_userPhone">userPhone</string>
     <string name="key_partnerPhone">partnerPhone</string>
+    <string name="key_nickname">nickname</string>
+    <string name="key_phoneNumber">phoneNumber</string>
+    <string name="key_partnerNumber">partnerNumber</string>
+    <string name="key_isCouple">isCouple</string>
+    <string name="key_preference_file">preference</string>
+    <string name="key_isRegister">isRegister</string>
+    <string name="key_isWaiting">isWaiting</string>
 </resources>

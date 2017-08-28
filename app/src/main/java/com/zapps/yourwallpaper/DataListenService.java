@@ -1,7 +1,9 @@
 package com.zapps.yourwallpaper;
 
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -17,6 +19,7 @@ public class DataListenService extends Service {
     String userPhone;
     String partnerPhone;
     String mateKey;
+    SharedPreferences pref;
 
     public DataListenService() {
     }
@@ -29,6 +32,12 @@ public class DataListenService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+
+        pref = getSharedPreferences(getString(R.string.key_preference_file),
+                Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putBoolean(getString(R.string.key_isWaiting), true);
+        editor.apply();
 
         Log.d("datalisten", "service stated");
         userPhone = intent.getStringExtra(getString(R.string.key_userPhone));
@@ -88,6 +97,9 @@ public class DataListenService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putBoolean(getString(R.string.key_isWaiting), false);
+        editor.apply();
         Log.d("datalisten", "end");
     }
 }
