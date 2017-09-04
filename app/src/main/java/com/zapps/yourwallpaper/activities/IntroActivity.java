@@ -5,8 +5,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import com.zapps.yourwallpaper.Constants;
-import com.zapps.yourwallpaper.PrefLib;
 import com.zapps.yourwallpaper.R;
+import com.zapps.yourwallpaper.lib.PrefLib;
 
 public class IntroActivity extends AppCompatActivity {
 
@@ -15,10 +15,9 @@ public class IntroActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_intro);
 
-        PrefLib.init(IntroActivity.this);
-
-        boolean isCouple = PrefLib.getBoolean(Constants.KEY_ISCOUPLE, false);
-        boolean isRegister = PrefLib.getBoolean(Constants.KEY_ISWAITING, false);
+        PrefLib prefLib = PrefLib.getInstance(IntroActivity.this);
+        boolean isCouple = prefLib.getBoolean(Constants.KEY_ISCOUPLE, false);
+        boolean isRegister = prefLib.getBoolean(Constants.KEY_ISWAITING, false);
 
         Intent intent;
 

@@ -15,8 +15,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.zapps.yourwallpaper.Constants;
-import com.zapps.yourwallpaper.PrefLib;
 import com.zapps.yourwallpaper.R;
+import com.zapps.yourwallpaper.lib.PrefLib;
 import com.zapps.yourwallpaper.vo.User;
 
 public class RegisterActivity extends AppCompatActivity {
@@ -94,14 +94,15 @@ public class RegisterActivity extends AppCompatActivity {
         DatabaseReference newUserRef = reference.push();
         newUserRef.setValue(user);
         userKey = newUserRef.getKey();
+        PrefLib prefLib = PrefLib.getInstance(RegisterActivity.this);
 
-        PrefLib.putString(Constants.KEY_NICKNAME, nickname);
-        PrefLib.putString(Constants.KEY_USERID, userKey);
-        PrefLib.putString(Constants.KEY_PHONENUMBER, phoneNumber);
-        PrefLib.putString(Constants.KEY_PARTNERNUMBER, partnerNumber);
+        prefLib.putString(Constants.KEY_NICKNAME, nickname);
+        prefLib.putString(Constants.KEY_USERID, userKey);
+        prefLib.putString(Constants.KEY_PHONENUMBER, phoneNumber);
+        prefLib.putString(Constants.KEY_PARTNERNUMBER, partnerNumber);
 
-        PrefLib.putBoolean(Constants.KEY_ISREGISTER, true);
-        PrefLib.putBoolean(Constants.KEY_ISCOUPLE, false);
+        prefLib.putBoolean(Constants.KEY_ISREGISTER, true);
+        prefLib.putBoolean(Constants.KEY_ISCOUPLE, false);
         //string constant problem
     }
 

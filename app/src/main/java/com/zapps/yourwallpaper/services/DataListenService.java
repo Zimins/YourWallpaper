@@ -2,7 +2,6 @@ package com.zapps.yourwallpaper.services;
 
 import android.app.Service;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -13,8 +12,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.zapps.yourwallpaper.Constants;
-import com.zapps.yourwallpaper.PrefLib;
 import com.zapps.yourwallpaper.R;
+import com.zapps.yourwallpaper.lib.PrefLib;
 import com.zapps.yourwallpaper.vo.User;
 
 public class DataListenService extends Service {
@@ -23,7 +22,7 @@ public class DataListenService extends Service {
     String partnerPhone;
     String userKey;
     String mateKey;
-    SharedPreferences pref;
+    PrefLib prefLib;
 
     public DataListenService() {
     }
@@ -37,10 +36,10 @@ public class DataListenService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
-        PrefLib.init(DataListenService.this);
-        PrefLib.putBoolean(Constants.KEY_ISWAITING, true);
+        prefLib = PrefLib.getInstance(DataListenService.this);
+        prefLib.putBoolean(Constants.KEY_ISWAITING, true);
 
-        userKey = PrefLib.getString(Constants.KEY_USERID, "");
+        userKey = prefLib.getString(Constants.KEY_USERID, "");
         userPhone = intent.getStringExtra(getString(R.string.key_userPhone));
         partnerPhone = intent.getStringExtra(getString(R.string.key_partnerPhone));
         //문자열 상수 인터페이스로 전환
@@ -66,7 +65,7 @@ public class DataListenService extends Service {
                     userRef.child(user.getMateKey()).child("mateKey").setValue(myKey);
                     userRef.child(user.getMateKey()).child("isCouple").setValue(true);
 
-                    PrefLib.putBoolean(Constants.KEY_ISCOUPLE, true);
+                    prefLib.putBoolean(Constants.KEY_ISCOUPLE, true);
 
                     Log.d("matekey", user.getMateKey());
                 }
@@ -89,6 +88,6 @@ public class DataListenService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        PrefLib.putBoolean(Constants.KEY_ISWAITING, false);
+        prefLib.putBoolean(Constants.KEY_ISWAITING, false);
     }
 }

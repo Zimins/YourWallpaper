@@ -7,7 +7,7 @@ package com.zapps.yourwallpaper;
 public interface Constants {
 
     String KEY_PREFERENCE = "preference";
-    String KEY_NICKNAME = "key_nickname";
+    String KEY_NICKNAME = "nickname";
     String KEY_PHONENUMBER = "phoneNumber";
     String KEY_PARTNERNUMBER = "partnerNumber";
     String KEY_USERID = "userID";
