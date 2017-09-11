@@ -40,6 +40,7 @@ public class DataListenService extends Service {
         prefLib.putBoolean(Constants.KEY_ISWAITING, true);
 
         userKey = prefLib.getString(Constants.KEY_USERID, "");
+        // TODO: 2017. 9. 11. constants 에서 가져오기
         userPhone = intent.getStringExtra(getString(R.string.key_userPhone));
         partnerPhone = intent.getStringExtra(getString(R.string.key_partnerPhone));
         //문자열 상수 인터페이스로 전환
@@ -54,6 +55,7 @@ public class DataListenService extends Service {
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                // TODO: 2017. 9. 11. 메소드 분리 방법 고려
                 Log.d("valueevent", userKey);
                 User user = dataSnapshot.getValue(User.class);
 

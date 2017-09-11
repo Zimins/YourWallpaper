@@ -14,6 +14,7 @@ public class SettingsActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
+
         ActionBar actionBar = this.getSupportActionBar();
 
         if (actionBar != null) {
@@ -24,9 +25,11 @@ public class SettingsActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemId = item.getItemId();
+
         if (itemId == android.R.id.home) {
             NavUtils.navigateUpFromSameTask(this);
         }
+
         return super.onOptionsItemSelected(item);
     }
 

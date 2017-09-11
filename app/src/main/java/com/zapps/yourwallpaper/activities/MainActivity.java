@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
@@ -52,13 +53,13 @@ public class MainActivity extends AppCompatActivity
 
         backgroundImage = (ImageView) findViewById(R.id.iv_background);
         galleryIcon = (ImageView) findViewById(R.id.icon_gallery);
-
         galleryIcon.setOnClickListener(this);
     }
 
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -111,7 +112,9 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onClick(View view) {
         int viewId = view.getId();
+
         switch (viewId) {
+
             case R.id.icon_gallery:
                 loadImageFromGallery();
                 break;
@@ -119,11 +122,14 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void loadImageFromGallery() {
-        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE)
+        if (ContextCompat
+                .checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
+
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
                     REQUEST_READ_STORAGE);
+
         } else {
             showImageGallery();
         }
@@ -132,6 +138,7 @@ public class MainActivity extends AppCompatActivity
     private void showImageGallery() {
         Intent intent =
                 new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+
         startActivityForResult(intent, REQUEST_LOAD_IMAGE);
     }
 
@@ -139,39 +146,42 @@ public class MainActivity extends AppCompatActivity
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == REQUEST_LOAD_IMAGE) {
-            if (resultCode == RESULT_OK) {
-                Uri selectedImage = data.getData();
-                String[] filePathColumn = {MediaStore.Images.Media.DATA};
+        if (requestCode != REQUEST_LOAD_IMAGE || resultCode != RESULT_OK) return;
 
-                Cursor cursor = getContentResolver().query(selectedImage,
-                        filePathColumn, null, null, null);
-                cursor.moveToFirst();
+        Uri selectedImage = data.getData();
+        String[] filePathColumn = {MediaStore.Images.Media.DATA};
 
-                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-                String picturePath = cursor.getString(columnIndex);
-                cursor.close();
+        Cursor cursor = getContentResolver()
+                .query(selectedImage, filePathColumn, null, null, null);
+        cursor.moveToFirst();
 
-                backgroundImage.setImageBitmap(BitmapFactory.decodeFile(picturePath));
-                backgroundImage.setScaleType(ImageView.ScaleType.MATRIX);
-                backgroundImage.bringToFront();
-            }
-        }
+        int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+        String picturePath = cursor.getString(columnIndex);
+        cursor.close();
+
+        backgroundImage.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+        backgroundImage.setScaleType(ImageView.ScaleType.MATRIX);
+        backgroundImage.bringToFront();
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == REQUEST_READ_STORAGE) {
-            if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                //permission granted
-                showImageGallery();
-            } else {
-                // notify you can't use service
-                Toast.makeText(MainActivity.this, "권한 없이 실행 불가합니다", Toast.LENGTH_SHORT).show();
-                // make notify message
 
-            }
+        //todo 로직 생각해보기
+
+        if (requestCode != REQUEST_READ_STORAGE) return;
+
+        if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            //permission granted
+            showImageGallery();
+        } else {
+            // notify you can't use service
+            Toast.makeText(MainActivity.this, "권한 없이 실행 불가합니다", Toast.LENGTH_SHORT).show();
+            // make notify message
+
         }
+
+
     }
 }

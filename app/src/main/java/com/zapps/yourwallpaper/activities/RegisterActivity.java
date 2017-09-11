@@ -45,8 +45,10 @@ public class RegisterActivity extends AppCompatActivity {
         database = FirebaseDatabase.getInstance();
         reference = database.getReference("users");
 
+        // TODO: 2017. 9. 11. id 의 스타일을 통일시킬것
         confirmButton = (Button) findViewById(R.id.button_confirm);
         nicknameInput = (EditText) findViewById(R.id.input_nickname);
+        // TODO: 2017. 9. 11. 오타수정
         userNumInput = (EditText) findViewById(R.id.input_my_nunber);
         partnerNumInput = (EditText) findViewById(R.id.input_partner_number);
 
@@ -54,7 +56,7 @@ public class RegisterActivity extends AppCompatActivity {
         confirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                // TODO: 2017. 9. 11. method 분리
                 nickname = nicknameInput.getText().toString();
                 userPhone= userNumInput.getText().toString();
                 partnerPhone = partnerNumInput.getText().toString();
@@ -78,8 +80,11 @@ public class RegisterActivity extends AppCompatActivity {
                     partnerNumInput.setError("wrong number!");
                     return;
                 }
+
                 writeNewUser(nickname, userPhone, partnerPhone);
+
                 updateToCouple(partnerPhone);
+
                 Intent intent = new Intent(RegisterActivity.this, WaitingActivity.class);
                 intent.putExtra(getString(R.string.key_userPhone), userPhone);
                 intent.putExtra(getString(R.string.key_partnerPhone), partnerPhone);
@@ -114,11 +119,12 @@ public class RegisterActivity extends AppCompatActivity {
                 .addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                // TODO: 2017. 9. 11. 분리 고려하기
                 //찾고 해당 키의 밸류 를 변경
                 partner = dataSnapshot.getValue(User.class);
                 String mateKey = dataSnapshot.getKey();
                 Log.d("register", mateKey);
-                if (!partner.isCouple) {
+                if (!partner.getIsCouple()) {
                     partner.setIsCouple(true);
                     reference.child(mateKey).child("mateKey").setValue(userKey);
                     reference.child(mateKey).child("isCouple").setValue(true);

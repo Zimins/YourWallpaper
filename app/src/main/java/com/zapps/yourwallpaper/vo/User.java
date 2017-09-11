@@ -5,11 +5,11 @@ package com.zapps.yourwallpaper.vo;
  */
 
 public class User {
-    public String nickname;
-    public String userPhone;
-    public String matePhone;
+    private String nickname;
+    private String userPhone;
+    private String matePhone;
     private String mateKey;
-    public boolean isCouple;
+    private boolean isCouple;
 
     public User(){}
 
@@ -17,6 +17,26 @@ public class User {
         this.nickname = nickname;
         this.userPhone = userPhone;
         this.matePhone = matePhone;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public boolean getIsCouple() {
+        return isCouple;
+    }
+
+    public void setCouple(boolean couple) {
+        isCouple = couple;
+    }
+
+    public void setIsCouple(boolean isCouple) {
+        this.isCouple = isCouple;
+    }
+
+    public String getMateKey() {
+        return mateKey;
     }
 
     @Override
@@ -29,15 +49,4 @@ public class User {
                 '}';
     }
 
-    public String getNickname() {
-        return nickname;
-    }
-
-    public void setIsCouple(boolean isCouple) {
-        this.isCouple = isCouple;
-    }
-
-    public String getMateKey() {
-        return mateKey;
-    }
 }

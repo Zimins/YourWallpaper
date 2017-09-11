@@ -19,4 +19,5 @@
     <string name="key_isRegister">isRegister</string>
     <string name="key_isWaiting">isWaiting</string>
     <string name="key_user">userID</string>
+
 </resources>

@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <!--<PreferenceCategory-->
-        android:title="general"
-        android:key="key_general">
+
         <EditTextPreference
             android:key="key_user_name"
             android:title="User Name"
@@ -14,20 +12,17 @@
             android:title="Name of mate"
             android:defaultValue="andy"
             android:summary="andy"/>
+
         <CheckBoxPreference
             android:title="notification"
             android:key="key_notification"
             android:defaultValue="true"
             android:summaryOff="off"
             android:summaryOn="on"/>
-    <!--</PreferenceCategory>-->
-    <!--<PreferenceCategory-->
-        <!--android:title="special"-->
-        <!--android:key="key_special">-->
+
         <EditTextPreference
             android:key="key_another_name"
             android:title="User Name"
             android:defaultValue="andy"
             android:summary="andy"/>
-    <!--</PreferenceCategory>-->
 </PreferenceScreen>

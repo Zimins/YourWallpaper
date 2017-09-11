@@ -1,11 +1,11 @@
 package com.zapps.yourwallpaper.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import com.zapps.yourwallpaper.Constants;
 import com.zapps.yourwallpaper.R;
+import com.zapps.yourwallpaper.lib.ActivityUtil;
 import com.zapps.yourwallpaper.lib.PrefLib;
 
 public class IntroActivity extends AppCompatActivity {
@@ -19,16 +19,20 @@ public class IntroActivity extends AppCompatActivity {
         boolean isCouple = prefLib.getBoolean(Constants.KEY_ISCOUPLE, false);
         boolean isRegister = prefLib.getBoolean(Constants.KEY_ISWAITING, false);
 
-        Intent intent;
+        Class targetActivity;
 
         if (isCouple) {
-            intent = new Intent(IntroActivity.this, MainActivity.class);
+            targetActivity = MainActivity.class;
         } else if (isRegister) {
-            intent = new Intent(IntroActivity.this, WaitingActivity.class);
+            targetActivity = WaitingActivity.class;
         } else {
-            intent = new Intent(IntroActivity.this, RegisterActivity.class);
+            targetActivity = RegisterActivity.class;
         }
 
-        startActivity(intent);
+        ActivityUtil.newActivity(IntroActivity.this, targetActivity);
+        // TODO: 2017. 9. 11. startactivity 를 모아놓아도 좋은방법
     }
+
+
+
 }
