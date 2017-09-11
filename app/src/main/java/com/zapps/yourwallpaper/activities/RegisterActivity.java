@@ -1,6 +1,5 @@
 package com.zapps.yourwallpaper.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.telephony.PhoneNumberUtils;
@@ -16,6 +15,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.zapps.yourwallpaper.Constants;
 import com.zapps.yourwallpaper.R;
+import com.zapps.yourwallpaper.lib.ActivityLib;
 import com.zapps.yourwallpaper.lib.PrefLib;
 import com.zapps.yourwallpaper.vo.User;
 
@@ -60,14 +60,13 @@ public class RegisterActivity extends AppCompatActivity {
 
                     updateToCouple(partnerPhone);
 
-                    Intent intent = new Intent(RegisterActivity.this, WaitingActivity.class);
-                    intent.putExtra(Constants.KEY_PHONENUMBER, userPhone);
-                    intent.putExtra(Constants.KEY_PARTNERNUMBER, partnerPhone);
-                    startActivity(intent);
+                    ActivityLib.getInstance()
+                            .goWaitinActivity(RegisterActivity.this, userPhone, partnerPhone);
                 }
             }
         });
     }
+
 
     private boolean checkInputVailed() {
         nickname = nicknameInput.getText().toString();
@@ -116,7 +115,6 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void updateToCouple(String partnerPhone) {
-        Log.i("update db", "flag on");
         reference
                 .orderByChild("userPhone")
                 .equalTo(partnerPhone)
@@ -127,20 +125,16 @@ public class RegisterActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                    }
+                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
 
                     @Override
-                    public void onChildRemoved(DataSnapshot dataSnapshot) {
-                    }
+                    public void onChildRemoved(DataSnapshot dataSnapshot) {}
 
                     @Override
-                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-                    }
+                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
 
                     @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                    }
+                    public void onCancelled(DatabaseError databaseError) {}
                 });
     }
 

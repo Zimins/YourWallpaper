@@ -184,4 +184,6 @@ public class MainActivity extends AppCompatActivity
 
 
     }
+    // TODO: 2017. 9. 11. upload image to server  
+    // TODO: 2017. 9. 11. send messege to partner
 }
