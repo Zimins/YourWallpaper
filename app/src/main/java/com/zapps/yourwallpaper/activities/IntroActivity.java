@@ -1,11 +1,11 @@
 package com.zapps.yourwallpaper.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import com.zapps.yourwallpaper.Constants;
 import com.zapps.yourwallpaper.R;
-import com.zapps.yourwallpaper.lib.ActivityUtil;
 import com.zapps.yourwallpaper.lib.PrefLib;
 
 public class IntroActivity extends AppCompatActivity {
@@ -29,10 +29,8 @@ public class IntroActivity extends AppCompatActivity {
             targetActivity = RegisterActivity.class;
         }
 
-        ActivityUtil.newActivity(IntroActivity.this, targetActivity);
-        // TODO: 2017. 9. 11. startactivity 를 모아놓아도 좋은방법
+        Intent intent = new Intent(IntroActivity.this, targetActivity);
+        startActivity(intent);
     }
-
-
 
 }

@@ -8,6 +8,8 @@ import android.content.Intent;
  */
 
 public class ActivityUtil {
+
+
     public static void newActivity(Context context, Class targetActivity) {
         Intent intent = new Intent(context, targetActivity);
         context.startActivity(intent);

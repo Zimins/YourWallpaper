@@ -48,49 +48,53 @@ public class RegisterActivity extends AppCompatActivity {
         // TODO: 2017. 9. 11. id 의 스타일을 통일시킬것
         confirmButton = (Button) findViewById(R.id.button_confirm);
         nicknameInput = (EditText) findViewById(R.id.input_nickname);
-        // TODO: 2017. 9. 11. 오타수정
-        userNumInput = (EditText) findViewById(R.id.input_my_nunber);
+        userNumInput = (EditText) findViewById(R.id.input_my_number);
         partnerNumInput = (EditText) findViewById(R.id.input_partner_number);
-
 
         confirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // TODO: 2017. 9. 11. method 분리
-                nickname = nicknameInput.getText().toString();
-                userPhone= userNumInput.getText().toString();
-                partnerPhone = partnerNumInput.getText().toString();
 
-                if (nickname.equals("")) {
-                    nicknameInput.setError("empty nickname!");
-                    return;
+                if (checkInputVailed()) {
+                    writeNewUser(nickname, userPhone, partnerPhone);
+
+                    updateToCouple(partnerPhone);
+
+                    Intent intent = new Intent(RegisterActivity.this, WaitingActivity.class);
+                    intent.putExtra(Constants.KEY_PHONENUMBER, userPhone);
+                    intent.putExtra(Constants.KEY_PARTNERNUMBER, partnerPhone);
+                    startActivity(intent);
                 }
-                // it should change to more hard detect
-                if (userPhone.equals("")) {
-                    userNumInput.setError("wrong number!");
-                    return;
-                }
-
-                if(!PhoneNumberUtils.isGlobalPhoneNumber(userPhone)) {
-                    userNumInput.setError("wrong number!");
-                    return;
-                }
-
-                if (partnerPhone.equals("")) {
-                    partnerNumInput.setError("wrong number!");
-                    return;
-                }
-
-                writeNewUser(nickname, userPhone, partnerPhone);
-
-                updateToCouple(partnerPhone);
-
-                Intent intent = new Intent(RegisterActivity.this, WaitingActivity.class);
-                intent.putExtra(getString(R.string.key_userPhone), userPhone);
-                intent.putExtra(getString(R.string.key_partnerPhone), partnerPhone);
-                startActivity(intent);
             }
         });
+    }
+
+    private boolean checkInputVailed() {
+        nickname = nicknameInput.getText().toString();
+        userPhone = userNumInput.getText().toString();
+        partnerPhone = partnerNumInput.getText().toString();
+
+        if (nickname.equals("")) {
+            nicknameInput.setError("empty nickname!");
+            return false;
+        }
+        // it should change to more hard detect
+        if (userPhone.equals("")) {
+            userNumInput.setError("wrong number!");
+            return false;
+        }
+
+        if (!PhoneNumberUtils.isGlobalPhoneNumber(userPhone)) {
+            userNumInput.setError("wrong number!");
+            return false;
+        }
+
+        if (partnerPhone.equals("")) {
+            partnerNumInput.setError("wrong number!");
+            return false;
+        }
+
+        return true;
     }
 
     private void writeNewUser(String nickname, String phoneNumber, String partnerNumber) {
@@ -117,32 +121,38 @@ public class RegisterActivity extends AppCompatActivity {
                 .orderByChild("userPhone")
                 .equalTo(partnerPhone)
                 .addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                // TODO: 2017. 9. 11. 분리 고려하기
-                //찾고 해당 키의 밸류 를 변경
-                partner = dataSnapshot.getValue(User.class);
-                String mateKey = dataSnapshot.getKey();
-                Log.d("register", mateKey);
-                if (!partner.getIsCouple()) {
-                    partner.setIsCouple(true);
-                    reference.child(mateKey).child("mateKey").setValue(userKey);
-                    reference.child(mateKey).child("isCouple").setValue(true);
-                }
-            }
+                    @Override
+                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                        updatePartner(dataSnapshot);
+                    }
 
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
+                    @Override
+                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                    }
 
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {}
+                    @Override
+                    public void onChildRemoved(DataSnapshot dataSnapshot) {
+                    }
 
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
+                    @Override
+                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                    }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {}
-        });
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                    }
+                });
+    }
+
+    private void updatePartner(DataSnapshot dataSnapshot) {
+        partner = dataSnapshot.getValue(User.class);
+        String mateKey = dataSnapshot.getKey();
+        Log.d("register", mateKey);
+        if (!partner.getIsCouple()) {
+            partner.setIsCouple(true);
+            reference.child(mateKey).child("mateKey").setValue(userKey);
+            reference.child(mateKey).child("isCouple").setValue(true);
+        }
     }
 
 }

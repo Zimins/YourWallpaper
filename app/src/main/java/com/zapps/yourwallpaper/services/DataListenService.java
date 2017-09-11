@@ -12,7 +12,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.zapps.yourwallpaper.Constants;
-import com.zapps.yourwallpaper.R;
 import com.zapps.yourwallpaper.lib.PrefLib;
 import com.zapps.yourwallpaper.vo.User;
 
@@ -40,9 +39,8 @@ public class DataListenService extends Service {
         prefLib.putBoolean(Constants.KEY_ISWAITING, true);
 
         userKey = prefLib.getString(Constants.KEY_USERID, "");
-        // TODO: 2017. 9. 11. constants 에서 가져오기
-        userPhone = intent.getStringExtra(getString(R.string.key_userPhone));
-        partnerPhone = intent.getStringExtra(getString(R.string.key_partnerPhone));
+        userPhone = intent.getStringExtra(Constants.KEY_PHONENUMBER);
+        partnerPhone = intent.getStringExtra(Constants.KEY_PARTNERNUMBER);
         //문자열 상수 인터페이스로 전환
 
 
@@ -55,22 +53,7 @@ public class DataListenService extends Service {
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                // TODO: 2017. 9. 11. 메소드 분리 방법 고려
-                Log.d("valueevent", userKey);
-                User user = dataSnapshot.getValue(User.class);
-
-                String myKey = dataSnapshot.getKey();
-                Log.d("chiledchanged", myKey);
-
-                if (user.getMateKey() != null) {
-                    //add mate key to my mate
-                    userRef.child(user.getMateKey()).child("mateKey").setValue(myKey);
-                    userRef.child(user.getMateKey()).child("isCouple").setValue(true);
-
-                    prefLib.putBoolean(Constants.KEY_ISCOUPLE, true);
-
-                    Log.d("matekey", user.getMateKey());
-                }
+                updatePartner(dataSnapshot, userRef);
             }
 
             @Override
@@ -84,6 +67,24 @@ public class DataListenService extends Service {
         });
 
         return START_REDELIVER_INTENT;
+    }
+
+    private void updatePartner(DataSnapshot dataSnapshot, DatabaseReference userRef) {
+        Log.d("valueevent", userKey);
+        User user = dataSnapshot.getValue(User.class);
+
+        String myKey = dataSnapshot.getKey();
+        Log.d("chiledchanged", myKey);
+
+        if (user.getMateKey() != null) {
+            //add mate key to my mate
+            userRef.child(user.getMateKey()).child("mateKey").setValue(myKey);
+            userRef.child(user.getMateKey()).child("isCouple").setValue(true);
+
+            prefLib.putBoolean(Constants.KEY_ISCOUPLE, true);
+
+            Log.d("matekey", user.getMateKey());
+        }
     }
 
 

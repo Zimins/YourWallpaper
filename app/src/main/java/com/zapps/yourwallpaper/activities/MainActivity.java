@@ -164,11 +164,11 @@ public class MainActivity extends AppCompatActivity
         backgroundImage.bringToFront();
     }
 
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-        //todo 로직 생각해보기
 
         if (requestCode != REQUEST_READ_STORAGE) return;
 

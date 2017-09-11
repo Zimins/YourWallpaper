@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 
+import com.zapps.yourwallpaper.Constants;
 import com.zapps.yourwallpaper.R;
 import com.zapps.yourwallpaper.services.DataListenService;
 
@@ -25,10 +26,8 @@ public class WaitingActivity extends AppCompatActivity {
 
         //service 를 하나만 돌아가게 하려면?
         if (!isServiceRunning(DataListenService.class)) {
-            //todo contants 에서 가져오기
-            waitService.putExtra(getString(R.string.key_userPhone) , intent.getStringExtra
-                    ("userPhone"));
-            waitService.putExtra(getString(R.string.key_partnerPhone), intent.getStringExtra("partnerPhone"));
+            waitService.putExtra(Constants.KEY_PHONENUMBER, intent.getStringExtra(Constants.KEY_PHONENUMBER));
+            waitService.putExtra(Constants.KEY_PARTNERNUMBER, intent.getStringExtra(Constants.KEY_PARTNERNUMBER));
             startService(waitService);
         }
 
