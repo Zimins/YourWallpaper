@@ -12,15 +12,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.zapps.yourwallpaper.R;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
-
-    private static final int REQUEST_LOAD_IMAGE = 100;
-    private static final int REQUEST_READ_STORAGE = 200;
 
     ImageView backgroundImage;
     ImageView galleryIcon;
@@ -96,8 +92,6 @@ public class MainActivity extends AppCompatActivity
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ImageView imageView = drawer.findViewById(R.id.imageView);
-        imageView.setOnClickListener(this);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
@@ -113,9 +107,6 @@ public class MainActivity extends AppCompatActivity
                 startActivity(intent);
                 break;
 
-            case R.id.imageView:
-                Toast.makeText(MainActivity.this, "icon", Toast.LENGTH_SHORT).show();
-                break;
         }
     }
 
