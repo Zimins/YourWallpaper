@@ -20,10 +20,14 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.zapps.yourwallpaper.Constants;
 import com.zapps.yourwallpaper.R;
+import com.zapps.yourwallpaper.lib.PrefLib;
 
 import java.io.ByteArrayOutputStream;
 
@@ -33,15 +37,21 @@ public class SendImageActivity extends AppCompatActivity implements View.OnClick
     private static final int REQUEST_LOAD_IMAGE = 200;
 
     private FirebaseStorage storage = FirebaseStorage.getInstance();
+    private FirebaseDatabase database = FirebaseDatabase.getInstance();
     private StorageReference reference = storage.getReference();
+    private DatabaseReference dbReference = database.getReference();
 
     private ImageView selectedImage;
     private Button uploadButton;
+
+    private PrefLib prefLib;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_send_image);
+
+        prefLib = PrefLib.getInstance(SendImageActivity.this);
 
         selectedImage = findViewById(R.id.iv_selected_image);
         uploadButton = findViewById(R.id.btn_upload);
@@ -54,37 +64,45 @@ public class SendImageActivity extends AppCompatActivity implements View.OnClick
     public void onClick(View view) {
         int viewId = view.getId();
         if (viewId == R.id.btn_upload) {
-            // TODO: 2017. 9. 12. image upload to server(ok) 
-            // TODO: 2017. 9. 12. update db info of partner 
-            // TODO: 2017. 9. 12. when db update, download image 
-            // TODO: 2017. 9. 12. configure file name  
-            String filename = "test.jpg";
-            // TODO: 2017. 9. 12. configure file directory 
-            StorageReference imageReference = reference.child("image/" + filename);
-            selectedImage.setDrawingCacheEnabled(true);
-            selectedImage.buildDrawingCache();
-            Bitmap bitmap = selectedImage.getDrawingCache();
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-            byte[] data = baos.toByteArray();
-
-            UploadTask uploadTask = imageReference.putBytes(data);
-            uploadTask.addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception exception) {
-                    // Handle unsuccessful uploads
-                }
-            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
-                    Uri downloadUrl = taskSnapshot.getDownloadUrl();
-                    // TODO: 2017. 9. 12. add this url to partner
-                    Toast.makeText(SendImageActivity.this, "upload done", Toast.LENGTH_SHORT)
-                            .show();
-                }
-            });
+            uploadImage();
         }
+    }
+
+    private void uploadImage() {
+        // TODO: 2017. 9. 12. image upload to server(ok)
+        // TODO: 2017. 9. 12. update db info of partner
+        // TODO: 2017. 9. 12. when db update, download image
+        // TODO: 2017. 9. 12. configure file name
+        String filename = "test.jpg";
+        // TODO: 2017. 9. 12. configure file directory
+
+        String mateKey = prefLib.getString(Constants.KEY_PARTNER, "");
+        StorageReference imageReference = reference.child("image/" + filename);
+        final DatabaseReference partnerReference = dbReference.child("users").child(mateKey);
+        selectedImage.setDrawingCacheEnabled(true);
+        selectedImage.buildDrawingCache();
+        Bitmap bitmap = selectedImage.getDrawingCache();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] data = baos.toByteArray();
+
+        UploadTask uploadTask = imageReference.putBytes(data);
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle unsuccessful uploads
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
+                Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                // TODO: 2017. 9. 12. add this url to partner
+                partnerReference.child("url").setValue(downloadUrl.toString());
+                Toast.makeText(SendImageActivity.this, "upload done", Toast.LENGTH_SHORT)
+                        .show();
+            }
+        });
     }
 
     private void loadImageFromGallery() {

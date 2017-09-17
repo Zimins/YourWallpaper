@@ -11,6 +11,7 @@ public interface Constants {
     String KEY_PHONENUMBER = "phoneNumber";
     String KEY_PARTNERNUMBER = "partnerNumber";
     String KEY_USERID = "userID";
+    String KEY_PARTNER = "partnerKey";
 
     String KEY_ISWAITING = "isWaiting";
     String KEY_ISREGISTER = "isRegister";

@@ -44,16 +44,16 @@ public class DataListenService extends Service {
         //문자열 상수 인터페이스로 전환
 
 
-        final DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("users");
+        final DatabaseReference userListRef = FirebaseDatabase.getInstance().getReference("users");
         Log.d("userkeyinservice", userKey);
 
-        userRef.addChildEventListener(new ChildEventListener() {
+        userListRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {}
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                updatePartner(dataSnapshot, userRef);
+                updatePartner(dataSnapshot, userListRef);
             }
 
             @Override
@@ -81,6 +81,7 @@ public class DataListenService extends Service {
             userRef.child(user.getMateKey()).child("mateKey").setValue(myKey);
             userRef.child(user.getMateKey()).child("isCouple").setValue(true);
 
+            prefLib.putString(Constants.KEY_PARTNER, user.getMateKey());
             prefLib.putBoolean(Constants.KEY_ISCOUPLE, true);
 
             Log.d("matekey", user.getMateKey());

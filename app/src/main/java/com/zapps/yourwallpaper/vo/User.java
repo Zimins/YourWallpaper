@@ -23,12 +23,20 @@ public class User {
         return nickname;
     }
 
-    public boolean getIsCouple() {
-        return isCouple;
-    }
-
     public void setCouple(boolean couple) {
         isCouple = couple;
+    }
+
+    public String getUserPhone() {
+        return userPhone;
+    }
+
+    public String getMatePhone() {
+        return matePhone;
+    }
+
+    public boolean getIsCouple() {
+        return isCouple;
     }
 
     public void setIsCouple(boolean isCouple) {
