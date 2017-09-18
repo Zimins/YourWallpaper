@@ -46,10 +46,10 @@ public class RegisterActivity extends AppCompatActivity {
         reference = database.getReference("users");
 
         // TODO: 2017. 9. 11. id 의 스타일을 통일시킬것
-        confirmButton = (Button) findViewById(R.id.button_confirm);
-        nicknameInput = (EditText) findViewById(R.id.input_nickname);
-        userNumInput = (EditText) findViewById(R.id.input_my_number);
-        partnerNumInput = (EditText) findViewById(R.id.input_partner_number);
+        confirmButton = findViewById(R.id.button_confirm);
+        nicknameInput = findViewById(R.id.input_nickname);
+        userNumInput = findViewById(R.id.input_my_number);
+        partnerNumInput = findViewById(R.id.input_partner_number);
 
         confirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,6 +98,9 @@ public class RegisterActivity extends AppCompatActivity {
 
     private void writeNewUser(String nickname, String phoneNumber, String partnerNumber) {
         //check vaild
+        // TODO: 2017. 9. 18. 번호가 맞는 번호인가?
+        // TODO: 2017. 9. 18. 이미 가입한 사용자는 아닌가?
+        // TODO: 2017. 9. 18. 찾는 사람이 없다면 ? 중복이라면 ?
         user = new User(nickname, phoneNumber, partnerNumber);
         DatabaseReference newUserRef = reference.push();
         newUserRef.setValue(user);

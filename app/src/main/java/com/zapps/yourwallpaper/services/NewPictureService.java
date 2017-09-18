@@ -24,6 +24,8 @@ import java.io.IOException;
 public class NewPictureService extends Service {
 
     PrefLib prefLib;
+
+    //GC 때문에 클래스 변수로 선언
     Target target = new Target() {
         @Override
         public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
@@ -67,12 +69,12 @@ public class NewPictureService extends Service {
         Log.d("newpictureservice", userKey);
 
         // TODO: 2017. 9. 18. 변수명 변경 
-        DatabaseReference userRef2 = FirebaseDatabase.getInstance().getReference("users" + "/" +
+        DatabaseReference userReference = FirebaseDatabase.getInstance().getReference("users" + "/" +
                 userKey );
-        userRef2.addChildEventListener(new ChildEventListener() {
+        userReference.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                Log.d("chiled added:ref2", "added");
+                Log.d("chiled added", dataSnapshot.toString());
                 if (dataSnapshot.getKey().equals("url")) {
                    Log.d("new url", dataSnapshot.getValue().toString());
                 }
@@ -80,32 +82,25 @@ public class NewPictureService extends Service {
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                Log.d("chiled chaged:ref2", "changed");
+                Log.d("chiled chaged", dataSnapshot.toString());
+
+                // TODO: 2017. 9. 18. string resource
                 Toast.makeText(getApplicationContext(), "새로운 사진", Toast.LENGTH_SHORT).show();
+
                 if (dataSnapshot.getKey().equals("url")) {
                     String downloadUrl = dataSnapshot.getValue().toString();
-                    Log.d("new picture", dataSnapshot.getKey());
-                    Log.d("new picture", dataSnapshot.getValue().toString());
-
                     setWallpaperBitmapFromUrl(downloadUrl);
-
                 }
             }
 
             @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
+            public void onChildRemoved(DataSnapshot dataSnapshot) {}
 
             @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-                Log.d("chiled moved:ref2", s);
-            }
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
+            public void onCancelled(DatabaseError databaseError) {}
         });
 
         return START_STICKY;

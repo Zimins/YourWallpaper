@@ -29,7 +29,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.orhanobut.logger.Logger;
 import com.zapps.yourwallpaper.Constants;
 import com.zapps.yourwallpaper.R;
 import com.zapps.yourwallpaper.lib.PrefLib;
@@ -68,16 +67,16 @@ public class SendImageActivity extends AppCompatActivity implements View.OnClick
     @Override
     public void onClick(View view) {
         int viewId = view.getId();
+
         if (viewId == R.id.btn_upload) {
-
-
             dbReference.child("users").orderByKey()
                     .equalTo(prefLib.getString(Constants.KEY_USERID, ""))
                     .addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
+
                             byte[] imageData = getDataFromImageView(selectedImage);
-                            Logger.d(dataSnapshot.getKey());
+
                             String mateKey = dataSnapshot
                                     .child(prefLib.getString(Constants.KEY_USERID, ""))
                                     .child("mateKey").getValue().toString();
@@ -108,10 +107,12 @@ public class SendImageActivity extends AppCompatActivity implements View.OnClick
         final DatabaseReference partnerReference = dbReference.child("users").child(mateKey);
 
         UploadTask uploadTask = imageReference.putBytes(imageData);
+        // TODO: 2017. 9. 18. 업로드 로딩화면이 있으면 ?
         uploadTask.addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
                 // Handle unsuccessful uploads
+                // todo 업로드 실패 메시지 제공하기
             }
         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
@@ -121,6 +122,8 @@ public class SendImageActivity extends AppCompatActivity implements View.OnClick
 
                 Uri downloadUrl = taskSnapshot.getDownloadUrl();
                 partnerReference.child("url").setValue(downloadUrl.toString());
+
+                // TODO: 2017. 9. 18. to string resource
                 Toast.makeText(SendImageActivity.this, "upload done", Toast.LENGTH_SHORT)
                         .show();
             }
@@ -141,6 +144,8 @@ public class SendImageActivity extends AppCompatActivity implements View.OnClick
 
 
     private void loadImageFromGallery() {
+
+        // TODO: 2017. 9. 18. 권한체크 부분 고려.(저장공간)
         if (ContextCompat
                 .checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -164,6 +169,7 @@ public class SendImageActivity extends AppCompatActivity implements View.OnClick
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        // TODO: 2017. 9. 18. request 여러개일때 상황 생각하기
         if (requestCode != REQUEST_LOAD_IMAGE || resultCode != RESULT_OK) return;
 
         Uri selectedImageUri = data.getData();

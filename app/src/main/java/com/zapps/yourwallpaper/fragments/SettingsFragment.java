@@ -17,6 +17,9 @@ import com.zapps.yourwallpaper.R;
 
 public class SettingsFragment extends PreferenceFragmentCompat implements SharedPreferences
         .OnSharedPreferenceChangeListener {
+
+    // TODO: 2017. 9. 18. 계정 정보 설정 추가
+
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         addPreferencesFromResource(R.xml.pref_yourwallpaper);

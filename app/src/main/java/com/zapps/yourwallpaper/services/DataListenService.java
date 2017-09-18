@@ -22,9 +22,9 @@ public class DataListenService extends Service implements ChildEventListener{
     String userPhone;
     String partnerPhone;
     String userKey;
-    String mateKey;
     PrefLib prefLib;
 
+    // TODO: 2017. 9. 18. 전체 유저 리스트를 참조하고 있는데 버그 고려하기
     DatabaseReference userListRef = FirebaseDatabase.getInstance().getReference("users");
 
     public DataListenService() {
@@ -45,10 +45,6 @@ public class DataListenService extends Service implements ChildEventListener{
         userKey = prefLib.getString(Constants.KEY_USERID, "");
         userPhone = intent.getStringExtra(Constants.KEY_PHONENUMBER);
         partnerPhone = intent.getStringExtra(Constants.KEY_PARTNERNUMBER);
-
-        //이건 제대로 작동하고 있나 ??
-
-        Log.d("userkeyinservice", userKey);
 
         userListRef.addChildEventListener(this);
 

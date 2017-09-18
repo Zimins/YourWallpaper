@@ -40,6 +40,8 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         backgroundImage = findViewById(R.id.iv_background);
+
+        //todo 사진 찍어서 입력도 지원
         galleryIcon = findViewById(R.id.icon_gallery);
         galleryIcon.setOnClickListener(this);
 
@@ -47,6 +49,7 @@ public class MainActivity extends AppCompatActivity
         startService(intent);
 
     }
+    // TODO: 2017. 9. 18. drawer code 삭제
 
     @Override
     public void onBackPressed() {

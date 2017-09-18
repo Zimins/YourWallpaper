@@ -10,6 +10,8 @@ import com.zapps.yourwallpaper.lib.PrefLib;
 
 public class IntroActivity extends AppCompatActivity {
 
+    // TODO: 2017. 9. 18. 사용자 인증 방법 고려하기
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

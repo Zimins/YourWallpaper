@@ -31,7 +31,7 @@ public class WaitingActivity extends AppCompatActivity {
             startService(waitService);
         }
 
-        tourButton = (Button) findViewById(R.id.button_tour);
+        tourButton = findViewById(R.id.button_tour);
         tourButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
