@@ -1,11 +1,10 @@
 package com.zapps.yourwallpaper.activities;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -32,11 +31,14 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 import com.zapps.yourwallpaper.Constants;
 import com.zapps.yourwallpaper.R;
 import com.zapps.yourwallpaper.lib.PrefLib;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 
 public class SendImageActivity extends AppCompatActivity
         implements View.OnClickListener, BottomNavigationView.OnNavigationItemSelectedListener {
@@ -71,6 +73,7 @@ public class SendImageActivity extends AppCompatActivity
 
         bottomNavigation.setOnNavigationItemSelectedListener(this);
 
+        //CropImage.startPickImageActivity(this);
         loadImageFromGallery();
     }
 
@@ -187,27 +190,65 @@ public class SendImageActivity extends AppCompatActivity
     }
 
     @Override
+    @SuppressLint("NewApi")
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         // TODO: 2017. 9. 18. request 여러개일때 상황 생각하기
-        if (requestCode != REQUEST_LOAD_IMAGE || resultCode != RESULT_OK) return;
+        if (requestCode == REQUEST_LOAD_IMAGE) {
 
-        Uri selectedImageUri = data.getData();
-        String[] filePathColumn = {MediaStore.Images.Media.DATA};
+            if (resultCode == RESULT_OK) {
 
-        Cursor cursor = getContentResolver()
-                .query(selectedImageUri, filePathColumn, null, null, null);
-        cursor.moveToFirst();
+                Uri selectedImageUri = data.getData();
+                CropImage.activity(selectedImageUri)
+                        .setAspectRatio(4,2)
+                        .setRequestedSize(500, 500, CropImageView.RequestSizeOptions.RESIZE_INSIDE)
+                        .start(SendImageActivity.this);
 
-        int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-        String picturePath = cursor.getString(columnIndex);
-        cursor.close();
+            }
 
+        } else if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
 
-        selectedImage.setImageBitmap(BitmapFactory.decodeFile(picturePath));
-        selectedImage.setScaleType(ImageView.ScaleType.MATRIX);
-        selectedImage.bringToFront();
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+
+            Log.d("requestcode", "crom image request");
+            if (resultCode == RESULT_OK) {
+
+                //           Uri resultUri = result.getUri();
+
+//                String[] filePathColumn = {MediaStore.Images.Media.DATA};
+//
+//                Cursor cursor = getContentResolver()
+//                        .query(resultUri, filePathColumn, null, null, null);
+//                cursor.moveToFirst();
+//
+//                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+//                String picturePath = cursor.getString(columnIndex);
+//                cursor.close();
+
+                if (result.isSuccessful()) {
+                    Log.d("crop image", "result success");
+                    Uri cropedImageUri = result.getUri();
+
+                    try {
+                        selectedImage.setImageBitmap(MediaStore.Images.Media.getBitmap
+                                (getContentResolver(), cropedImageUri));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    selectedImage.setScaleType(ImageView.ScaleType.FIT_XY);
+                    selectedImage.bringToFront();
+
+                } else {
+                    Log.d("crop image", "error");
+                }
+
+            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                Exception error = result.getError();
+                Log.d("crop error", error.getMessage());
+            }
+        }
+
     }
 
     @Override
