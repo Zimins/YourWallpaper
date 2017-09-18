@@ -10,10 +10,13 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -35,7 +38,8 @@ import com.zapps.yourwallpaper.lib.PrefLib;
 
 import java.io.ByteArrayOutputStream;
 
-public class SendImageActivity extends AppCompatActivity implements View.OnClickListener {
+public class SendImageActivity extends AppCompatActivity
+        implements View.OnClickListener, BottomNavigationView.OnNavigationItemSelectedListener {
 
     private static final int REQUEST_READ_STORAGE = 100;
     private static final int REQUEST_LOAD_IMAGE = 200;
@@ -47,6 +51,7 @@ public class SendImageActivity extends AppCompatActivity implements View.OnClick
 
     private ImageView selectedImage;
     private Button uploadButton;
+    private BottomNavigationView bottomNavigation;
 
     private PrefLib prefLib;
 
@@ -55,20 +60,34 @@ public class SendImageActivity extends AppCompatActivity implements View.OnClick
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_send_image);
 
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         prefLib = PrefLib.getInstance(SendImageActivity.this);
 
         selectedImage = findViewById(R.id.iv_selected_image);
-        uploadButton = findViewById(R.id.btn_upload);
-        uploadButton.setOnClickListener(this);
+        bottomNavigation = findViewById(R.id.bottomNavigationView);
+
+        bottomNavigation.setOnNavigationItemSelectedListener(this);
 
         loadImageFromGallery();
     }
 
     @Override
     public void onClick(View view) {
-        int viewId = view.getId();
 
-        if (viewId == R.id.btn_upload) {
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.action_edit) {
+
+        } else if (id == R.id.action_choose) {
+            loadImageFromGallery();
+        } else if (id == R.id.action_upload) {
             dbReference.child("users").orderByKey()
                     .equalTo(prefLib.getString(Constants.KEY_USERID, ""))
                     .addListenerForSingleValueEvent(new ValueEventListener() {
@@ -89,7 +108,9 @@ public class SendImageActivity extends AppCompatActivity implements View.OnClick
 
                         }
                     });
+            return true;
         }
+        return false;
     }
 
     private void uploadImageToKey(byte[] imageData, String mateKey) {

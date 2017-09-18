@@ -7,26 +7,45 @@
     android:layout_height="match_parent"
     tools:context="com.zapps.yourwallpaper.activities.SendImageActivity">
 
+    <android.support.v7.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="0dp"
+        android:background="@color/colorPrimary"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="0dp"
+        android:layout_marginEnd="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:id="@+id/toolbar"/>
+
     <ImageView
         android:id="@+id/iv_selected_image"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="334dp"
+        android:layout_height="354dp"
+        android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:scaleType="fitCenter"
+        app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
         app:srcCompat="@drawable/empty_image" />
 
-    <Button
-        android:id="@+id/btn_upload"
-        android:layout_width="wrap_content"
+    <android.support.design.widget.BottomNavigationView
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginStart="8dp"
-        android:text="upload"
+        app:itemTextColor="@color/colorPrimaryDark"
+        android:background="@color/colorPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:menu="@menu/menu_send_image"
+        android:id="@+id/bottomNavigationView"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginBottom="0dp"
+        android:layout_marginEnd="0dp"
+        app:layout_constraintEnd_toEndOf="parent">
+
+    </android.support.design.widget.BottomNavigationView>
 </android.support.constraint.ConstraintLayout>
