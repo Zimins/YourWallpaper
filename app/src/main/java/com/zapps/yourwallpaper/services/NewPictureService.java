@@ -1,7 +1,10 @@
 package com.zapps.yourwallpaper.services;
 
 import android.app.Service;
+import android.app.WallpaperManager;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.os.IBinder;
 import android.util.Log;
 import android.widget.Toast;
@@ -11,12 +14,39 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 import com.zapps.yourwallpaper.Constants;
 import com.zapps.yourwallpaper.lib.PrefLib;
+
+import java.io.IOException;
 
 public class NewPictureService extends Service {
 
     PrefLib prefLib;
+    Target target = new Target() {
+        @Override
+        public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+            Log.d("bitmapLoading", "bitmap done");
+            WallpaperManager manager = (WallpaperManager) getApplicationContext()
+                    .getSystemService(WALLPAPER_SERVICE);
+            try {
+                manager.setBitmap(bitmap);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        public void onBitmapFailed(Drawable errorDrawable) {
+            Log.d("bitmapLoading", "failed");
+        }
+
+        @Override
+        public void onPrepareLoad(Drawable placeHolderDrawable) {
+            Log.d("bitmapLoading", "onprepareLoad");
+        }
+    };
 
     public NewPictureService() {
     }
@@ -36,6 +66,7 @@ public class NewPictureService extends Service {
 
         Log.d("newpictureservice", userKey);
 
+        // TODO: 2017. 9. 18. 변수명 변경 
         DatabaseReference userRef2 = FirebaseDatabase.getInstance().getReference("users" + "/" +
                 userKey );
         userRef2.addChildEventListener(new ChildEventListener() {
@@ -52,6 +83,11 @@ public class NewPictureService extends Service {
                 Log.d("chiled chaged:ref2", "changed");
                 Toast.makeText(getApplicationContext(), "새로운 사진", Toast.LENGTH_SHORT).show();
                 if (dataSnapshot.getKey().equals("url")) {
+                    String downloadUrl = dataSnapshot.getValue().toString();
+                    Log.d("new picture", dataSnapshot.getKey());
+                    Log.d("new picture", dataSnapshot.getValue().toString());
+
+                    setWallpaperBitmapFromUrl(downloadUrl);
 
                 }
             }
@@ -74,4 +110,11 @@ public class NewPictureService extends Service {
 
         return START_STICKY;
     }
+
+    private void setWallpaperBitmapFromUrl(String url) {
+        Log.d("newPicture setting", url );
+        Picasso.with(NewPictureService.this).load(url).into(target);
+    }
+
+
 }

@@ -17,6 +17,8 @@ import com.zapps.yourwallpaper.vo.User;
 
 public class DataListenService extends Service implements ChildEventListener{
 
+    // TODO: 2017. 9. 18. modify class name
+
     String userPhone;
     String partnerPhone;
     String userKey;
@@ -89,6 +91,8 @@ public class DataListenService extends Service implements ChildEventListener{
     @Override
     public void onChildChanged(DataSnapshot dataSnapshot, String s) {
         updatePartner(dataSnapshot, userListRef);
+
+        // 유지되는 리스너 삭제
         userListRef.removeEventListener(this);
     }
 

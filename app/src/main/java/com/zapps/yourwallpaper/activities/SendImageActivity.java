@@ -94,11 +94,12 @@ public class SendImageActivity extends AppCompatActivity implements View.OnClick
     }
 
     private void uploadImageToKey(byte[] imageData, String mateKey) {
-        // TODO: 2017. 9. 12. update db info of partner
-        // TODO: 2017. 9. 12. when db update, download image
-        // TODO: 2017. 9. 12. configure file name
-        String filename = "test.jpg";
+
+        // TODO: 2017. 9. 12. configure file name 무엇으로 정해야 다수의 사용자가 편하게 ?
+        // TODO: 2017. 9. 18. 히스토리를 서버에 유지 할지 말지
         // TODO: 2017. 9. 12. configure file directory
+
+        String filename = "test.jpg";
 
         Log.d("sendimage to", mateKey);
 
@@ -117,8 +118,8 @@ public class SendImageActivity extends AppCompatActivity implements View.OnClick
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 // taskSnapshot.getMetadata() contains file metadata such as size, content-type,
                 // and download URL.
+
                 Uri downloadUrl = taskSnapshot.getDownloadUrl();
-                // TODO: 2017. 9. 12. add this url to partner
                 partnerReference.child("url").setValue(downloadUrl.toString());
                 Toast.makeText(SendImageActivity.this, "upload done", Toast.LENGTH_SHORT)
                         .show();
