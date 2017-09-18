@@ -4,6 +4,7 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -33,6 +34,8 @@ public class NewPictureService extends Service {
 
         String userKey = prefLib.getString(Constants.KEY_USERID, "");
 
+        Log.d("newpictureservice", userKey);
+
         DatabaseReference userRef2 = FirebaseDatabase.getInstance().getReference("users" + "/" +
                 userKey );
         userRef2.addChildEventListener(new ChildEventListener() {
@@ -47,6 +50,10 @@ public class NewPictureService extends Service {
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
                 Log.d("chiled chaged:ref2", "changed");
+                Toast.makeText(getApplicationContext(), "새로운 사진", Toast.LENGTH_SHORT).show();
+                if (dataSnapshot.getKey().equals("url")) {
+
+                }
             }
 
             @Override

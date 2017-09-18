@@ -13,6 +13,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -20,11 +21,15 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.orhanobut.logger.Logger;
 import com.zapps.yourwallpaper.Constants;
 import com.zapps.yourwallpaper.R;
 import com.zapps.yourwallpaper.lib.PrefLib;
@@ -64,29 +69,44 @@ public class SendImageActivity extends AppCompatActivity implements View.OnClick
     public void onClick(View view) {
         int viewId = view.getId();
         if (viewId == R.id.btn_upload) {
-            uploadImage();
+
+
+            dbReference.child("users").orderByKey()
+                    .equalTo(prefLib.getString(Constants.KEY_USERID, ""))
+                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            byte[] imageData = getDataFromImageView(selectedImage);
+                            Logger.d(dataSnapshot.getKey());
+                            String mateKey = dataSnapshot
+                                    .child(prefLib.getString(Constants.KEY_USERID, ""))
+                                    .child("mateKey").getValue().toString();
+
+                            uploadImageToKey(imageData, mateKey);
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
         }
     }
 
-    private void uploadImage() {
-        // TODO: 2017. 9. 12. image upload to server(ok)
+    private void uploadImageToKey(byte[] imageData, String mateKey) {
         // TODO: 2017. 9. 12. update db info of partner
         // TODO: 2017. 9. 12. when db update, download image
         // TODO: 2017. 9. 12. configure file name
         String filename = "test.jpg";
         // TODO: 2017. 9. 12. configure file directory
 
-        String mateKey = prefLib.getString(Constants.KEY_PARTNER, "");
-        StorageReference imageReference = reference.child("image/" + filename);
-        final DatabaseReference partnerReference = dbReference.child("users").child(mateKey);
-        selectedImage.setDrawingCacheEnabled(true);
-        selectedImage.buildDrawingCache();
-        Bitmap bitmap = selectedImage.getDrawingCache();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-        byte[] data = baos.toByteArray();
+        Log.d("sendimage to", mateKey);
 
-        UploadTask uploadTask = imageReference.putBytes(data);
+        StorageReference imageReference = reference.child("image/" + filename);
+
+        final DatabaseReference partnerReference = dbReference.child("users").child(mateKey);
+
+        UploadTask uploadTask = imageReference.putBytes(imageData);
         uploadTask.addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
@@ -95,7 +115,8 @@ public class SendImageActivity extends AppCompatActivity implements View.OnClick
         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
+                // taskSnapshot.getMetadata() contains file metadata such as size, content-type,
+                // and download URL.
                 Uri downloadUrl = taskSnapshot.getDownloadUrl();
                 // TODO: 2017. 9. 12. add this url to partner
                 partnerReference.child("url").setValue(downloadUrl.toString());
@@ -104,6 +125,19 @@ public class SendImageActivity extends AppCompatActivity implements View.OnClick
             }
         });
     }
+
+    private byte[] getDataFromImageView(ImageView selectedImage) {
+
+        selectedImage.setDrawingCacheEnabled(true);
+        selectedImage.buildDrawingCache();
+
+        Bitmap bitmap = selectedImage.getDrawingCache();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+
+        return baos.toByteArray();
+    }
+
 
     private void loadImageFromGallery() {
         if (ContextCompat
@@ -149,7 +183,8 @@ public class SendImageActivity extends AppCompatActivity implements View.OnClick
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
 

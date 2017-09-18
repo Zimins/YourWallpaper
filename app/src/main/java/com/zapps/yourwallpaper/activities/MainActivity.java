@@ -118,10 +118,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-
     }
-
 
     // TODO: 2017. 9. 11. upload image to server
     // TODO: 2017. 9. 11. send messege to partner

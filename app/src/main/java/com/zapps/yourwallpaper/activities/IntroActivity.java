@@ -19,6 +19,7 @@ public class IntroActivity extends AppCompatActivity {
         boolean isCouple = prefLib.getBoolean(Constants.KEY_ISCOUPLE, false);
         boolean isRegister = prefLib.getBoolean(Constants.KEY_ISWAITING, false);
 
+
         Class targetActivity;
 
         if (isCouple) {

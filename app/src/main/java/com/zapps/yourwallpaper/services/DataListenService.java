@@ -15,13 +15,15 @@ import com.zapps.yourwallpaper.Constants;
 import com.zapps.yourwallpaper.lib.PrefLib;
 import com.zapps.yourwallpaper.vo.User;
 
-public class DataListenService extends Service {
+public class DataListenService extends Service implements ChildEventListener{
 
     String userPhone;
     String partnerPhone;
     String userKey;
     String mateKey;
     PrefLib prefLib;
+
+    DatabaseReference userListRef = FirebaseDatabase.getInstance().getReference("users");
 
     public DataListenService() {
     }
@@ -41,35 +43,18 @@ public class DataListenService extends Service {
         userKey = prefLib.getString(Constants.KEY_USERID, "");
         userPhone = intent.getStringExtra(Constants.KEY_PHONENUMBER);
         partnerPhone = intent.getStringExtra(Constants.KEY_PARTNERNUMBER);
-        //문자열 상수 인터페이스로 전환
 
+        //이건 제대로 작동하고 있나 ??
 
-        final DatabaseReference userListRef = FirebaseDatabase.getInstance().getReference("users");
         Log.d("userkeyinservice", userKey);
 
-        userListRef.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {}
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                updatePartner(dataSnapshot, userListRef);
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {}
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {}
-        });
+        userListRef.addChildEventListener(this);
 
         return START_REDELIVER_INTENT;
     }
 
     private void updatePartner(DataSnapshot dataSnapshot, DatabaseReference userRef) {
+        // 나의 matekey
         Log.d("valueevent", userKey);
         User user = dataSnapshot.getValue(User.class);
 
@@ -84,7 +69,8 @@ public class DataListenService extends Service {
             prefLib.putString(Constants.KEY_PARTNER, user.getMateKey());
             prefLib.putBoolean(Constants.KEY_ISCOUPLE, true);
 
-            Log.d("matekey", user.getMateKey());
+            Log.d("matekey on datalisten", user.getMateKey());
+            userListRef.removeEventListener(this);
         }
     }
 
@@ -93,5 +79,31 @@ public class DataListenService extends Service {
     public void onDestroy() {
         super.onDestroy();
         prefLib.putBoolean(Constants.KEY_ISWAITING, false);
+    }
+
+    @Override
+    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+
+    }
+
+    @Override
+    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+        updatePartner(dataSnapshot, userListRef);
+        userListRef.removeEventListener(this);
+    }
+
+    @Override
+    public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+    }
+
+    @Override
+    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+    }
+
+    @Override
+    public void onCancelled(DatabaseError databaseError) {
+
     }
 }
