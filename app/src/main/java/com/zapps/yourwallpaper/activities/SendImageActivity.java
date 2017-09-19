@@ -1,11 +1,10 @@
 package com.zapps.yourwallpaper.activities;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -17,8 +16,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -32,14 +29,16 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.theartofdev.edmodo.cropper.CropImage;
 import com.zapps.yourwallpaper.Constants;
 import com.zapps.yourwallpaper.R;
 import com.zapps.yourwallpaper.lib.PrefLib;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 
 public class SendImageActivity extends AppCompatActivity
-        implements View.OnClickListener, BottomNavigationView.OnNavigationItemSelectedListener {
+        implements BottomNavigationView.OnNavigationItemSelectedListener {
 
     private static final int REQUEST_READ_STORAGE = 100;
     private static final int REQUEST_LOAD_IMAGE = 200;
@@ -50,7 +49,6 @@ public class SendImageActivity extends AppCompatActivity
     private DatabaseReference dbReference = database.getReference();
 
     private ImageView selectedImage;
-    private Button uploadButton;
     private BottomNavigationView bottomNavigation;
 
     private PrefLib prefLib;
@@ -72,11 +70,6 @@ public class SendImageActivity extends AppCompatActivity
         bottomNavigation.setOnNavigationItemSelectedListener(this);
 
         loadImageFromGallery();
-    }
-
-    @Override
-    public void onClick(View view) {
-
     }
 
     @Override
@@ -187,27 +180,51 @@ public class SendImageActivity extends AppCompatActivity
     }
 
     @Override
+    @SuppressLint("NewApi")
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         // TODO: 2017. 9. 18. request 여러개일때 상황 생각하기
-        if (requestCode != REQUEST_LOAD_IMAGE || resultCode != RESULT_OK) return;
+        if (requestCode == REQUEST_LOAD_IMAGE) {
 
-        Uri selectedImageUri = data.getData();
-        String[] filePathColumn = {MediaStore.Images.Media.DATA};
+            if (resultCode == RESULT_OK) {
 
-        Cursor cursor = getContentResolver()
-                .query(selectedImageUri, filePathColumn, null, null, null);
-        cursor.moveToFirst();
+                Uri selectedImageUri = data.getData();
+                CropImage.activity(selectedImageUri)
+                        .setAspectRatio(2,4)
+                        .start(SendImageActivity.this);
 
-        int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-        String picturePath = cursor.getString(columnIndex);
-        cursor.close();
+            }
 
+        } else if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
 
-        selectedImage.setImageBitmap(BitmapFactory.decodeFile(picturePath));
-        selectedImage.setScaleType(ImageView.ScaleType.MATRIX);
-        selectedImage.bringToFront();
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+
+            if (resultCode == RESULT_OK) {
+
+                if (result.isSuccessful()) {
+
+                    Uri cropedImageUri = result.getUri();
+
+                    try {
+                        selectedImage.setImageBitmap(MediaStore.Images.Media.getBitmap
+                                (getContentResolver(), cropedImageUri));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    //selectedImage.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+                    selectedImage.bringToFront();
+
+                }
+
+            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+
+                Exception error = result.getError();
+                Log.d("crop error", error.getMessage());
+            }
+        }
+
     }
 
     @Override

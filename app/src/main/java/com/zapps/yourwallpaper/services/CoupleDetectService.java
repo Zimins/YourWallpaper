@@ -15,7 +15,7 @@ import com.zapps.yourwallpaper.Constants;
 import com.zapps.yourwallpaper.lib.PrefLib;
 import com.zapps.yourwallpaper.vo.User;
 
-public class DataListenService extends Service implements ChildEventListener{
+public class CoupleDetectService extends Service implements ChildEventListener{
 
     // TODO: 2017. 9. 18. modify class name
 
@@ -25,9 +25,10 @@ public class DataListenService extends Service implements ChildEventListener{
     PrefLib prefLib;
 
     // TODO: 2017. 9. 18. 전체 유저 리스트를 참조하고 있는데 버그 고려하기
-    DatabaseReference userListRef = FirebaseDatabase.getInstance().getReference("users");
+    DatabaseReference userListRef = FirebaseDatabase.getInstance().getReference("users/" +
+            userKey);
 
-    public DataListenService() {
+    public CoupleDetectService() {
     }
 
     @Nullable
@@ -39,7 +40,7 @@ public class DataListenService extends Service implements ChildEventListener{
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
-        prefLib = PrefLib.getInstance(DataListenService.this);
+        prefLib = PrefLib.getInstance(CoupleDetectService.this);
         prefLib.putBoolean(Constants.KEY_ISWAITING, true);
 
         userKey = prefLib.getString(Constants.KEY_USERID, "");
@@ -81,7 +82,7 @@ public class DataListenService extends Service implements ChildEventListener{
 
     @Override
     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-
+        updatePartner(dataSnapshot, userListRef);
     }
 
     @Override

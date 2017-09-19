@@ -10,7 +10,7 @@ import android.widget.Button;
 
 import com.zapps.yourwallpaper.Constants;
 import com.zapps.yourwallpaper.R;
-import com.zapps.yourwallpaper.services.DataListenService;
+import com.zapps.yourwallpaper.services.CoupleDetectService;
 
 public class WaitingActivity extends AppCompatActivity {
 
@@ -22,10 +22,10 @@ public class WaitingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_waiting);
 
         Intent intent = getIntent();
-        Intent waitService = new Intent(WaitingActivity.this, DataListenService.class);
+        Intent waitService = new Intent(WaitingActivity.this, CoupleDetectService.class);
 
         //service 를 하나만 돌아가게 하려면?
-        if (!isServiceRunning(DataListenService.class)) {
+        if (!isServiceRunning(CoupleDetectService.class)) {
             waitService.putExtra(Constants.KEY_PHONENUMBER, intent.getStringExtra(Constants.KEY_PHONENUMBER));
             waitService.putExtra(Constants.KEY_PARTNERNUMBER, intent.getStringExtra(Constants.KEY_PARTNERNUMBER));
             startService(waitService);
