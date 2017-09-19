@@ -25,4 +25,9 @@
             android:title="User Name"
             android:defaultValue="andy"
             android:summary="andy"/>
+
+        <Preference
+            android:key="key_logout"
+            android:title="logout"/>
+
 </PreferenceScreen>
