@@ -7,7 +7,6 @@
     <uses-permission android:name="android.permission.SET_WALLPAPER" />
     <uses-permission android:name="android.permission.INTERNET" />
 
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -39,7 +38,7 @@
         </activity>
 
         <service
-            android:name=".services.DataListenService"
+            android:name=".services.CoupleDetectService"
             android:enabled="true"
             android:exported="true" />
 

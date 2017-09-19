@@ -22,9 +22,9 @@
 
     <ImageView
         android:id="@+id/iv_selected_image"
-        android:layout_width="334dp"
-        android:layout_height="354dp"
-        android:layout_marginBottom="8dp"
+        android:layout_width="255dp"
+        android:layout_height="417dp"
+        android:layout_marginBottom="16dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"

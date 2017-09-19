@@ -16,8 +16,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -32,7 +30,6 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.theartofdev.edmodo.cropper.CropImage;
-import com.theartofdev.edmodo.cropper.CropImageView;
 import com.zapps.yourwallpaper.Constants;
 import com.zapps.yourwallpaper.R;
 import com.zapps.yourwallpaper.lib.PrefLib;
@@ -41,7 +38,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 public class SendImageActivity extends AppCompatActivity
-        implements View.OnClickListener, BottomNavigationView.OnNavigationItemSelectedListener {
+        implements BottomNavigationView.OnNavigationItemSelectedListener {
 
     private static final int REQUEST_READ_STORAGE = 100;
     private static final int REQUEST_LOAD_IMAGE = 200;
@@ -52,7 +49,6 @@ public class SendImageActivity extends AppCompatActivity
     private DatabaseReference dbReference = database.getReference();
 
     private ImageView selectedImage;
-    private Button uploadButton;
     private BottomNavigationView bottomNavigation;
 
     private PrefLib prefLib;
@@ -73,13 +69,7 @@ public class SendImageActivity extends AppCompatActivity
 
         bottomNavigation.setOnNavigationItemSelectedListener(this);
 
-        //CropImage.startPickImageActivity(this);
         loadImageFromGallery();
-    }
-
-    @Override
-    public void onClick(View view) {
-
     }
 
     @Override
@@ -201,8 +191,7 @@ public class SendImageActivity extends AppCompatActivity
 
                 Uri selectedImageUri = data.getData();
                 CropImage.activity(selectedImageUri)
-                        .setAspectRatio(4,2)
-                        .setRequestedSize(500, 500, CropImageView.RequestSizeOptions.RESIZE_INSIDE)
+                        .setAspectRatio(2,4)
                         .start(SendImageActivity.this);
 
             }
@@ -211,23 +200,10 @@ public class SendImageActivity extends AppCompatActivity
 
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
 
-            Log.d("requestcode", "crom image request");
             if (resultCode == RESULT_OK) {
 
-                //           Uri resultUri = result.getUri();
-
-//                String[] filePathColumn = {MediaStore.Images.Media.DATA};
-//
-//                Cursor cursor = getContentResolver()
-//                        .query(resultUri, filePathColumn, null, null, null);
-//                cursor.moveToFirst();
-//
-//                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-//                String picturePath = cursor.getString(columnIndex);
-//                cursor.close();
-
                 if (result.isSuccessful()) {
-                    Log.d("crop image", "result success");
+
                     Uri cropedImageUri = result.getUri();
 
                     try {
@@ -236,14 +212,14 @@ public class SendImageActivity extends AppCompatActivity
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    selectedImage.setScaleType(ImageView.ScaleType.FIT_XY);
+
+                    //selectedImage.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
                     selectedImage.bringToFront();
 
-                } else {
-                    Log.d("crop image", "error");
                 }
 
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+
                 Exception error = result.getError();
                 Log.d("crop error", error.getMessage());
             }
