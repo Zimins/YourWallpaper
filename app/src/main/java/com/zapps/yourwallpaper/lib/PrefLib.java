@@ -33,6 +33,16 @@ public class PrefLib {
         return pref.getString(key, defaultValue);
     }
 
+    public void putInt(String key, int value) {
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putInt(key, value);
+        editor.apply();
+    }
+
+    public int getInt(String key, int defValue) {
+        return pref.getInt(key, defValue);
+    }
+
     public void putStringSet(String key, Set<String> values) {
         SharedPreferences.Editor editor = pref.edit();
         editor.putStringSet(key, values);

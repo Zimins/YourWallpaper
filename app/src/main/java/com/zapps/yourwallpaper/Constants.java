@@ -16,4 +16,6 @@ public interface Constants {
     String KEY_ISWAITING = "isWaiting";
     String KEY_ISREGISTER = "isRegister";
     String KEY_ISCOUPLE = "isCouple";
+
+    String KEY_WALLNUMBER = "wallpaperNum";
 }

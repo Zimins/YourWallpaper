@@ -5,8 +5,10 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -35,6 +37,9 @@ import com.zapps.yourwallpaper.R;
 import com.zapps.yourwallpaper.lib.PrefLib;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
 public class SendImageActivity extends AppCompatActivity
@@ -106,7 +111,7 @@ public class SendImageActivity extends AppCompatActivity
         return false;
     }
 
-    private void uploadImageToKey(byte[] imageData, String mateKey) {
+    private void uploadImageToKey(final byte[] imageData, String mateKey) {
 
         // TODO: 2017. 9. 12. configure file name 무엇으로 정해야 다수의 사용자가 편하게 ?
         // TODO: 2017. 9. 18. 히스토리를 서버에 유지 할지 말지
@@ -140,16 +145,67 @@ public class SendImageActivity extends AppCompatActivity
                 // TODO: 2017. 9. 18. to string resource
                 Toast.makeText(SendImageActivity.this, "upload done", Toast.LENGTH_SHORT)
                         .show();
+
+                int fileNum = prefLib.getInt(Constants.KEY_WALLNUMBER, 0);
+
+                if (isExternalStorageWritable()) {
+
+                    File file =
+                            new File(getAlbumStorageDir("/wallhistory"),
+                                    "wall" + fileNum + ".jpeg");
+                    prefLib.putInt(Constants.KEY_WALLNUMBER, ++fileNum);
+
+                    try {
+                        FileOutputStream out = new FileOutputStream(file);
+                        out.write(imageData);
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+
+                }
             }
         });
     }
 
+    private File getAlbumStorageDir(String albumName) {
+
+        File file = new File(Environment.getExternalStoragePublicDirectory(Environment
+                .DIRECTORY_PICTURES), albumName);
+
+        if (!file.mkdirs()) {
+            Log.e("file error", "directory not created");
+        }
+
+        return file;
+    }
+
+    private boolean isExternalStorageWritable() {
+        String state = Environment.getExternalStorageState();
+
+        if (Environment.MEDIA_MOUNTED.equals(state)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public boolean isExternalStorageReadable() {
+        String state = Environment.getExternalStorageState();
+
+        if (Environment.MEDIA_MOUNTED.equals(state) ||
+                Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
+            return true;
+        }
+
+        return false;
+    }
+
     private byte[] getDataFromImageView(ImageView selectedImage) {
 
-        selectedImage.setDrawingCacheEnabled(true);
-        selectedImage.buildDrawingCache();
-
-        Bitmap bitmap = selectedImage.getDrawingCache();
+        Bitmap bitmap = ((BitmapDrawable) selectedImage.getDrawable()).getBitmap();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
 
