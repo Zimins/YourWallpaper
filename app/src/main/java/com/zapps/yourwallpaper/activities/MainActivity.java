@@ -1,6 +1,8 @@
 package com.zapps.yourwallpaper.activities;
 
+import android.app.WallpaperManager;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import com.zapps.yourwallpaper.HistoryAdapter;
 import com.zapps.yourwallpaper.HistoryItem;
@@ -25,6 +28,7 @@ public class MainActivity extends AppCompatActivity
 
     @BindView(R.id.recycler_history) RecyclerView recyclerView;
     @BindView(R.id.btn_new_wallpaper) Button newWallpaperButton;
+    @BindView(R.id.iv_my_wallpaper) ImageView myWallpaperImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +57,11 @@ public class MainActivity extends AppCompatActivity
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(adapter);
 
+        WallpaperManager wallpaperManager = (WallpaperManager) getSystemService(WALLPAPER_SERVICE);
+
+        Drawable myWallpaper = wallpaperManager.getDrawable();
+
+        myWallpaperImage.setImageDrawable(myWallpaper);
     }
 
     @Override

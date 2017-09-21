@@ -27,5 +27,10 @@
     <string name="waiting_title">Almost Done!</string>
     <string name="waiting_messege">You can start service when your opponent accepts invitation.</string>
     <string name="waiting_quick_tour">quick tour</string>
+    <string name="main_history">history</string>
+    <string name="main_partner_wallpaper">Partner Wallpaper</string>
+    <string name="main_my_wallpaper">My Wallpaper</string>
+    <string name="main_messege">No partner now!</string>
+    <string name="main_send_picture">Send new picture</string>
 
 </resources>

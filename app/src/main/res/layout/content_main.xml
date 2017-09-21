@@ -24,7 +24,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="0dp">
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintVertical_bias="1.0">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
@@ -36,31 +37,31 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
-                android:text="현대 상대방이 설정되어 있지 않습니다"
+                android:text="@string/main_messege"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 android:layout_marginTop="16dp"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
-                android:id="@+id/imageView2"
+                android:id="@+id/iv_partner_wallpaper"
                 android:layout_width="160dp"
                 android:layout_height="264dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="24dp"
+                android:layout_marginStart="24dp"
                 android:background="@drawable/shape_dotted_box"
                 android:layerType="software"
                 app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginTop="36dp"
                 app:layout_constraintTop_toBottomOf="@+id/tv_main_messege" />
 
             <ImageView
-                android:id="@+id/imageView3"
+                android:id="@+id/iv_my_wallpaper"
                 android:src="@drawable/shape_dotted_box"
                 android:layout_width="160dp"
                 android:layout_height="264dp"
-                android:layout_marginEnd="16dp"
+                android:layout_marginEnd="24dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/imageView2"
+                app:layout_constraintTop_toTopOf="@+id/iv_partner_wallpaper"
                 tools:layout_editor_absoluteX="202dp" />
 
             <TextView
@@ -68,8 +69,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
-                android:text="history"
-                app:layout_constraintTop_toBottomOf="@+id/imageView2"
+                android:text="@string/main_history"
+                app:layout_constraintTop_toBottomOf="@+id/iv_partner_wallpaper"
                 app:layout_constraintStart_toStartOf="parent"
                 android:layout_marginStart="16dp" />
 
@@ -88,6 +89,26 @@
                 app:layout_constraintTop_toBottomOf="@+id/tv_history"
                 tools:listitem="@layout/item_history"
                 tools:orientation="horizontal" />
+
+            <TextView
+                android:id="@+id/tv_partner_wallpaper"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/main_partner_wallpaper"
+                android:layout_marginBottom="8dp"
+                app:layout_constraintBottom_toTopOf="@+id/iv_partner_wallpaper"
+                app:layout_constraintStart_toStartOf="@+id/iv_partner_wallpaper"
+                android:layout_marginStart="8dp" />
+
+            <TextView
+                android:id="@+id/tv_my_wallpaper"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/main_my_wallpaper"
+                android:layout_marginBottom="8dp"
+                app:layout_constraintBottom_toTopOf="@+id/iv_my_wallpaper"
+                app:layout_constraintStart_toStartOf="@+id/iv_my_wallpaper"
+                android:layout_marginStart="8dp" />
         </android.support.constraint.ConstraintLayout>
 
 
@@ -95,7 +116,7 @@
 
     <Button
         android:id="@+id/btn_new_wallpaper"
-        android:text="Send new picture"
+        android:text="@string/main_send_picture"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="0dp"
