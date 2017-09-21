@@ -4,10 +4,12 @@ import android.app.WallpaperManager;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,6 +20,8 @@ import com.zapps.yourwallpaper.HistoryAdapter;
 import com.zapps.yourwallpaper.HistoryItem;
 import com.zapps.yourwallpaper.R;
 import com.zapps.yourwallpaper.services.NewPictureService;
+
+import java.io.File;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -43,14 +47,20 @@ public class MainActivity extends AppCompatActivity
         Intent intent = new Intent(MainActivity.this, NewPictureService.class);
         startService(intent);
 
-        HistoryAdapter adapter = new HistoryAdapter();
+        HistoryAdapter adapter = new HistoryAdapter(MainActivity.this);
 
-        adapter.addItem(new HistoryItem(R.drawable.empty_image, "hello"));
-        adapter.addItem(new HistoryItem(R.drawable.empty_image, "hello"));
-        adapter.addItem(new HistoryItem(R.drawable.empty_image, "hello"));
-        adapter.addItem(new HistoryItem(R.drawable.empty_image, "hello"));
-        adapter.addItem(new HistoryItem(R.drawable.empty_image, "hello"));
-        adapter.addItem(new HistoryItem(R.drawable.empty_image, "hello"));
+        // 디렉터리가 없다면 ?
+        String historyFilesDirName = Environment.getExternalStorageDirectory() + "/" + "Pictures"
+                + "/" + "wallhistory";
+        Log.d("path" , historyFilesDirName);
+
+        File historyDir = new File(historyFilesDirName);
+        File[] historyImages = historyDir.listFiles();
+
+        for (File image : historyImages) {
+            adapter.addItem(new HistoryItem(image, image.getName()));
+        }
+
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this,
                 LinearLayoutManager.HORIZONTAL, false);

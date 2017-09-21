@@ -1,16 +1,18 @@
 package com.zapps.yourwallpaper;
 
+import java.io.File;
+
 /**
  * Created by Zimincom on 2017. 9. 20..
  */
 
 public class HistoryItem {
 
-    int imageSrc;
+    File image;
     String name;
 
-    public HistoryItem(int imageSrc, String name) {
-        this.imageSrc = imageSrc;
+    public HistoryItem(File image, String name) {
+        this.image = image;
         this.name = name;
     }
 }
