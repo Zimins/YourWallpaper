@@ -11,7 +11,7 @@
         android:id="@+id/tv_message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="please input your information."
+        android:text="@string/register_messege"
         android:layout_marginRight="8dp"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginLeft="8dp"
@@ -27,7 +27,7 @@
         android:id="@+id/button_confirm"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="confirm"
+        android:text="@string/register_confirm"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"/>
@@ -46,7 +46,7 @@
             android:id="@+id/input_nickname"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="please input nickname"
+            android:hint="@string/register_hint_nickname"
             android:inputType="text"/>
     </android.support.design.widget.TextInputLayout>
 
@@ -67,7 +67,7 @@
             android:id="@+id/input_my_number"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="please input your number"
+            android:hint="@string/register_hint_number"
             android:inputType="phone"
             />
     </android.support.design.widget.TextInputLayout>
@@ -89,7 +89,7 @@
             android:id="@+id/input_partner_number"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="please input opponent's number"
+            android:hint="@string/register_hint_partner_number"
             android:inputType="phone"
             />
     </android.support.design.widget.TextInputLayout>

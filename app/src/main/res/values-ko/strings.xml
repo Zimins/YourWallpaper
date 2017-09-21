@@ -5,4 +5,12 @@
     <string name="navigation_drawer_close">서랍닫기</string>
     <string name="navigation_drawer_open">서랍열기</string>
     <string name="my_history">히스토리</string>
+    <string name="register_messege">환영합니다! 몇가지 정보를 입력해주세요!</string>
+    <string name="register_confirm">확인</string>
+    <string name="register_hint_nickname">닉네임을 적어주세요</string>
+    <string name="register_hint_number">본인의 전화번호를 적어주세요</string>
+    <string name="register_hint_partner_number">상대방의 전화번호를 적어주세요</string>
+    <string name="waiting_title">거의 끝났습니다!</string>
+    <string name="waiting_messege">상대방이 등록하면 서비스를 사용하실 수 있습니다!</string>
+    <string name="waiting_quick_tour">미리보기</string>
 </resources>

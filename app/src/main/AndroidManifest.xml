@@ -37,11 +37,6 @@
         <activity android:name=".activities.WaitingActivity">
         </activity>
 
-        <service
-            android:name=".services.CoupleDetectService"
-            android:enabled="true"
-            android:exported="true" />
-
         <activity
             android:name=".activities.IntroActivity"
             android:noHistory="true">
@@ -59,6 +54,11 @@
             android:name=".activities.SendImageActivity"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
+
+        <service
+            android:name=".services.CoupleDetectService"
+            android:enabled="true"
+            android:exported="true" />
 
         <service
             android:name=".services.NewPictureService"

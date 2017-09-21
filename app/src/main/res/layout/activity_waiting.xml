@@ -14,7 +14,7 @@
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginTop="64dp"
-        android:text="Almost Done!"
+        android:text="@string/waiting_title"
         android:textSize="24sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -25,7 +25,7 @@
         android:layout_width="329dp"
         android:layout_height="63dp"
         android:layout_marginTop="95dp"
-        android:text="You can start service when your opponent accepts invitation."
+        android:text="@string/waiting_messege"
         app:layout_constraintTop_toBottomOf="@+id/tv_title"
         android:layout_marginRight="27dp"
         app:layout_constraintRight_toRightOf="parent"/>
@@ -37,7 +37,7 @@
         android:layout_marginBottom="0dp"
         android:layout_marginLeft="0dp"
         android:layout_marginRight="0dp"
-        android:text="quick tour"
+        android:text="@string/waiting_quick_tour"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"/>
