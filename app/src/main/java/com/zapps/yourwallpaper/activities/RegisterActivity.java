@@ -19,15 +19,18 @@ import com.zapps.yourwallpaper.lib.ActivityLib;
 import com.zapps.yourwallpaper.lib.PrefLib;
 import com.zapps.yourwallpaper.vo.User;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class RegisterActivity extends AppCompatActivity {
 
-    FirebaseDatabase database;
-    DatabaseReference reference;
+    private FirebaseDatabase database;
+    private DatabaseReference reference;
 
-    Button confirmButton;
-    EditText nicknameInput;
-    EditText userNumInput;
-    EditText partnerNumInput;
+    @BindView(R.id.button_confirm) Button confirmButton;
+    @BindView(R.id.input_nickname) EditText nicknameInput;
+    @BindView(R.id.input_my_number) EditText userNumInput;
+    @BindView(R.id.input_partner_number) EditText partnerNumInput;
 
     String nickname;
     String userPhone;
@@ -41,22 +44,18 @@ public class RegisterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+        ButterKnife.bind(this);
 
         database = FirebaseDatabase.getInstance();
         reference = database.getReference("users");
-
-        confirmButton = findViewById(R.id.button_confirm);
-        nicknameInput = findViewById(R.id.input_nickname);
-        userNumInput = findViewById(R.id.input_my_number);
-        partnerNumInput = findViewById(R.id.input_partner_number);
 
         confirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 if (checkInputVailed()) {
-                    writeNewUser(nickname, userPhone, partnerPhone);
 
+                    writeNewUser(nickname, userPhone, partnerPhone);
                     updateToCouple(partnerPhone);
 
                     ActivityLib.getInstance()
@@ -68,6 +67,7 @@ public class RegisterActivity extends AppCompatActivity {
 
 
     private boolean checkInputVailed() {
+
         nickname = nicknameInput.getText().toString();
         userPhone = userNumInput.getText().toString();
         partnerPhone = partnerNumInput.getText().toString();
@@ -101,9 +101,12 @@ public class RegisterActivity extends AppCompatActivity {
         // TODO: 2017. 9. 18. 이미 가입한 사용자는 아닌가?
         // TODO: 2017. 9. 18. 찾는 사람이 없다면 ? 중복이라면 ?
         user = new User(nickname, phoneNumber, partnerNumber);
+
         DatabaseReference newUserRef = reference.push();
         newUserRef.setValue(user);
+
         userKey = newUserRef.getKey();
+
         PrefLib prefLib = PrefLib.getInstance(RegisterActivity.this);
 
         prefLib.putString(Constants.KEY_NICKNAME, nickname);

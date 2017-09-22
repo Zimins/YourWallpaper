@@ -22,12 +22,12 @@ public class CoupleDetectService extends Service implements ChildEventListener{
     String userKey;
     PrefLib prefLib;
 
-    // TODO: 2017. 9. 18. 전체 유저 리스트를 참조하고 있는데 버그 고려하기
     DatabaseReference userListRef = FirebaseDatabase.getInstance().getReference("users/" +
             userKey);
 
-    public CoupleDetectService() {
-    }
+    public CoupleDetectService() {}
+
+
 
     @Nullable
     @Override

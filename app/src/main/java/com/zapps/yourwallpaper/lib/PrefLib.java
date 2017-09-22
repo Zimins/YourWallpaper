@@ -3,8 +3,6 @@ package com.zapps.yourwallpaper.lib;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import java.util.Set;
-
 import static com.zapps.yourwallpaper.Constants.KEY_PREFERENCE;
 
 public class PrefLib {
@@ -26,7 +24,6 @@ public class PrefLib {
     public SharedPreferences getPref() {
         return pref;
     }
-
     public void putString(String key, String value) {
         SharedPreferences.Editor editor = pref.edit();
         editor.putString(key, value);
@@ -45,16 +42,6 @@ public class PrefLib {
 
     public int getInt(String key, int defValue) {
         return pref.getInt(key, defValue);
-    }
-
-    public void putStringSet(String key, Set<String> values) {
-        SharedPreferences.Editor editor = pref.edit();
-        editor.putStringSet(key, values);
-        editor.apply();
-    }
-
-    public Set<String> getStringSet(String key, Set<String> defaultValues) {
-        return pref.getStringSet(key, defaultValues);
     }
 
     public void putBoolean(String key, boolean value) {

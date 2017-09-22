@@ -80,8 +80,8 @@ public class SendImageActivity extends AppCompatActivity
 
         selectedImage = findViewById(R.id.iv_selected_image);
         bottomNavigation = findViewById(R.id.bottomNavigationView);
-
         bottomNavigation.setOnNavigationItemSelectedListener(this);
+
 
         if (intent.hasExtra("imageUri")) {
             Log.d("sendimageact", "setImageUri");
@@ -99,9 +99,16 @@ public class SendImageActivity extends AppCompatActivity
 
         if (id == R.id.action_edit) {
 
+            Toast.makeText(getApplicationContext(),
+                    "This feature is not currently supported.",
+                    Toast.LENGTH_SHORT).show();
+
         } else if (id == R.id.action_choose) {
+
             loadImageFromGallery();
+
         } else if (id == R.id.action_upload) {
+
             dbReference.child("users").orderByKey()
                     .equalTo(prefLib.getString(Constants.KEY_USERID, ""))
                     .addListenerForSingleValueEvent(new ValueEventListener() {
@@ -147,7 +154,6 @@ public class SendImageActivity extends AppCompatActivity
         final DatabaseReference partnerReference = dbReference.child("users").child(mateKey);
 
         UploadTask uploadTask = imageReference.putBytes(imageData);
-        // TODO: 2017. 9. 18. 업로드 로딩화면이 있으면 ?
         uploadTask.addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
@@ -211,17 +217,6 @@ public class SendImageActivity extends AppCompatActivity
         return false;
     }
 
-    public boolean isExternalStorageReadable() {
-        String state = Environment.getExternalStorageState();
-
-        if (Environment.MEDIA_MOUNTED.equals(state) ||
-                Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
-            return true;
-        }
-
-        return false;
-    }
-
     private byte[] getDataFromImageView(ImageView selectedImage) {
 
         Bitmap bitmap = ((BitmapDrawable) selectedImage.getDrawable()).getBitmap();
@@ -272,6 +267,7 @@ public class SendImageActivity extends AppCompatActivity
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        // 현재 액티비티에서도 사진을 고를 수 있어서 main 과 코드 중복
         if (requestCode == REQUEST_LOAD_IMAGE) {
 
             if (resultCode == RESULT_OK) {

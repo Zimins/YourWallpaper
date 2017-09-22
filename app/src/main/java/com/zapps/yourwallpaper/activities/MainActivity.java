@@ -36,7 +36,6 @@ import butterknife.OnClick;
 public class MainActivity extends AppCompatActivity
         implements View.OnClickListener {
 
-    private static final int REQUEST_READ_STORAGE = 100;
     private static final int REQUEST_LOAD_IMAGE = 200;
     // TODO: 2017. 9. 21. 권한 앱 시작시에 받기
 
@@ -46,12 +45,15 @@ public class MainActivity extends AppCompatActivity
     @BindView(R.id.rl_bottom_sheet) RelativeLayout bottomSheet;
 
     HistoryAdapter adapter;
+
     BottomSheetBehavior bottomBehavior;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitleTextColor(getColor(android.R.color.white));
         setSupportActionBar(toolbar);
@@ -67,9 +69,7 @@ public class MainActivity extends AppCompatActivity
         recyclerView.setAdapter(adapter);
 
         WallpaperManager wallpaperManager = (WallpaperManager) getSystemService(WALLPAPER_SERVICE);
-
         Drawable myWallpaper = wallpaperManager.getDrawable();
-
         myWallpaperImage.setImageDrawable(myWallpaper);
 
         bottomBehavior = BottomSheetBehavior.from(bottomSheet);
@@ -81,7 +81,6 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
-        // TODO: 2017. 9. 21. 새로 보낼때 갱신하기 (지금 2배씩 늘어남)
         loadImagesFromDisk(adapter);
     }
 
@@ -119,10 +118,6 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onClick(View view) {
-    }
-
     @OnClick(R.id.btn_new_wallpaper)
     public void showSelectDialog(View v) {
         Log.d("main", "show dialog");
@@ -130,16 +125,10 @@ public class MainActivity extends AppCompatActivity
         bottomSheet.show(getSupportFragmentManager(), bottomSheet.getTag());
     }
 
-
-    private void showImageGallery() {
-        Intent intent =
-                new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-
-        startActivityForResult(intent, REQUEST_LOAD_IMAGE);
-    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
         if (requestCode == REQUEST_LOAD_IMAGE) {
 
             if (resultCode == RESULT_OK) {
@@ -161,8 +150,8 @@ public class MainActivity extends AppCompatActivity
 
                     Uri cropedImageUri = result.getUri();
 
-                    Intent sendImageIntent = new Intent(MainActivity.this, SendImageActivity
-                            .class);
+                    Intent sendImageIntent =
+                            new Intent(MainActivity.this, SendImageActivity.class);
                     sendImageIntent.putExtra("imageUri", cropedImageUri);
                     startActivity(sendImageIntent);
 
@@ -172,15 +161,13 @@ public class MainActivity extends AppCompatActivity
 
                 Exception error = result.getError();
                 Log.d("crop error", error.getMessage());
+
             }
         } else if (requestCode == MainBottomSheetFragment.REQUEST_IMAGE_CAPTURE && resultCode ==
                 RESULT_OK) {
 
             String historyFilesDirName = Environment.getExternalStorageDirectory() + "/" + "Pictures"
                     + "/" + "wallhistory";
-
-            //String capturedDir = get
-           // Log.d("path" , capturedDir);
 
             Uri capturedImageUri = (Uri) data.getExtras().get("data");
 

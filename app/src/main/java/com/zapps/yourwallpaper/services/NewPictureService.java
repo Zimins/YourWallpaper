@@ -55,7 +55,6 @@ public class NewPictureService extends Service {
 
     @Override
     public IBinder onBind(Intent intent) {
-        // TODO: Return the communication channel to the service.
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
@@ -84,7 +83,7 @@ public class NewPictureService extends Service {
                 Log.d("chiled chaged", dataSnapshot.toString());
 
                 // TODO: 2017. 9. 18. string resource
-                Toast.makeText(getApplicationContext(), "새로운 사진", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "새로운 배경화면!", Toast.LENGTH_SHORT).show();
 
                 if (dataSnapshot.getKey().equals("url")) {
                     String downloadUrl = dataSnapshot.getValue().toString();

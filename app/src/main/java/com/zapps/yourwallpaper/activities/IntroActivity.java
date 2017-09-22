@@ -18,9 +18,9 @@ public class IntroActivity extends AppCompatActivity {
         setContentView(R.layout.activity_intro);
 
         PrefLib prefLib = PrefLib.getInstance(IntroActivity.this);
+
         boolean isCouple = prefLib.getBoolean(Constants.KEY_ISCOUPLE, false);
         boolean isRegister = prefLib.getBoolean(Constants.KEY_ISWAITING, false);
-
 
         Class targetActivity;
 
