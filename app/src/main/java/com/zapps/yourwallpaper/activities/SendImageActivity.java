@@ -84,8 +84,12 @@ public class SendImageActivity extends AppCompatActivity
 
         bottomNavigation.setOnNavigationItemSelectedListener(this);
 
-        Picasso.with(this).load((Uri)intent.getExtras().get("croppedImageUri")).into
-                (selectedImage);
+        if (intent.hasExtra("imageUri")) {
+            Log.d("sendimageact", "setImageUri");
+            Picasso.with(this).load((Uri)intent.getExtras().get("imageUri")).into(selectedImage);
+        } else if (intent.hasExtra("imageBitmap")) {
+            selectedImage.setImageBitmap((Bitmap) intent.getExtras().get("imageBitmap"));
+        }
 
         //loadImageFromGallery();
     }
@@ -106,6 +110,12 @@ public class SendImageActivity extends AppCompatActivity
                         public void onDataChange(DataSnapshot dataSnapshot) {
 
                             byte[] imageData = getDataFromImageView(selectedImage);
+
+                            if(!prefLib.getBoolean(Constants.KEY_ISCOUPLE, false)) {
+                                Toast.makeText(SendImageActivity.this, "you are not couple!",
+                                        Toast.LENGTH_SHORT).show();
+                                return;
+                            }
 
                             String mateKey = dataSnapshot
                                     .child(prefLib.getString(Constants.KEY_USERID, ""))
@@ -143,7 +153,6 @@ public class SendImageActivity extends AppCompatActivity
         uploadTask.addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
-                // Handle unsuccessful uploads
                 // todo 업로드 실패 메시지 제공하기
             }
         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -246,6 +255,19 @@ public class SendImageActivity extends AppCompatActivity
                 new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 
         startActivityForResult(intent, REQUEST_LOAD_IMAGE);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int itemId = item.getItemId();
+
+        switch (itemId) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

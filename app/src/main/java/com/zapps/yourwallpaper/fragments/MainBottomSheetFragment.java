@@ -4,20 +4,23 @@ import android.Manifest;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.icu.text.SimpleDateFormat;
 import android.net.Uri;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 
-import com.theartofdev.edmodo.cropper.CropImage;
 import com.zapps.yourwallpaper.R;
-import com.zapps.yourwallpaper.activities.SendImageActivity;
 
-import static android.app.Activity.RESULT_OK;
+import java.io.File;
+import java.io.IOException;
+import java.util.Date;
 
 /**
  * Created by Zimincom on 2017. 9. 22..
@@ -27,6 +30,7 @@ public class MainBottomSheetFragment extends BottomSheetDialogFragment {
 
     private static final int REQUEST_READ_STORAGE = 100;
     private static final int REQUEST_LOAD_IMAGE = 200;
+    public static final int REQUEST_IMAGE_CAPTURE = 1;
 
     @Override
     public void setupDialog(final Dialog dialog, int style) {
@@ -55,7 +59,40 @@ public class MainBottomSheetFragment extends BottomSheetDialogFragment {
     }
 
     private void loadImageFromCamera() {
-        
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+        if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+            // Create the File where the photo should go
+            File photoFile = null;
+            try {
+                photoFile = createImageFile();
+            } catch (IOException ex) {
+                // Error occurred while creating the File
+                Log.i("exception", "IOException");
+            }
+            // Continue only if the File was successfully created
+            if (photoFile != null) {
+                Uri takenPhotoUri = FileProvider.getUriForFile(getContext(),
+                        "com.zapps.yourwallpaper.fileprovider", photoFile);
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, takenPhotoUri);
+                getActivity().startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+            }
+        }
+    }
+
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  // prefix
+                ".jpg",         // suffix
+                storageDir      // directory
+        );
+
+        // Save a file: path for use with ACTION_VIEW intents
+        return image;
     }
 
     public void selectFromGallery() {
@@ -82,42 +119,5 @@ public class MainBottomSheetFragment extends BottomSheetDialogFragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-        Log.d("bottom fragment", "onactivity result");
-
-        if (requestCode == REQUEST_LOAD_IMAGE) {
-
-            if (resultCode == RESULT_OK) {
-
-                Uri selectedImageUri = data.getData();
-                CropImage.activity(selectedImageUri)
-                        .setAspectRatio(2,4)
-                        .start(getActivity());
-
-            }
-
-        } else if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
-
-            CropImage.ActivityResult result = CropImage.getActivityResult(data);
-
-            if (resultCode == RESULT_OK) {
-
-                if (result.isSuccessful()) {
-
-                    Uri cropedImageUri = result.getUri();
-
-                    Intent sendImageIntent = new Intent(getContext(), SendImageActivity
-                            .class);
-                    sendImageIntent.putExtra("cropedImageUri", cropedImageUri);
-                    startActivity(sendImageIntent);
-
-                }
-
-            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
-
-                Exception error = result.getError();
-                Log.d("crop error", error.getMessage());
-            }
-        }
     }
 }

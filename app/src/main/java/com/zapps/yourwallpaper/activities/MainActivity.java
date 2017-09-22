@@ -1,17 +1,13 @@
 package com.zapps.yourwallpaper.activities;
 
-import android.Manifest;
 import android.app.WallpaperManager;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.design.widget.BottomSheetBehavior;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -22,7 +18,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.theartofdev.edmodo.cropper.CropImage;
@@ -33,7 +28,6 @@ import com.zapps.yourwallpaper.fragments.MainBottomSheetFragment;
 import com.zapps.yourwallpaper.services.NewPictureService;
 
 import java.io.File;
-import java.io.IOException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -62,8 +56,6 @@ public class MainActivity extends AppCompatActivity
         toolbar.setTitleTextColor(getColor(android.R.color.white));
         setSupportActionBar(toolbar);
 
-
-        //todo 사진 찍어서 입력도 지원
         Intent intent = new Intent(MainActivity.this, NewPictureService.class);
         startService(intent);
 
@@ -97,6 +89,8 @@ public class MainActivity extends AppCompatActivity
         String historyFilesDirName = Environment.getExternalStorageDirectory() + "/" + "Pictures"
                 + "/" + "wallhistory";
         Log.d("path" , historyFilesDirName);
+
+        adapter.clearItems();
 
         File historyDir = new File(historyFilesDirName);
         File[] historyImages = historyDir.listFiles();
@@ -169,7 +163,7 @@ public class MainActivity extends AppCompatActivity
 
                     Intent sendImageIntent = new Intent(MainActivity.this, SendImageActivity
                             .class);
-                    sendImageIntent.putExtra("croppedImageUri", cropedImageUri);
+                    sendImageIntent.putExtra("imageUri", cropedImageUri);
                     startActivity(sendImageIntent);
 
                 }
@@ -179,6 +173,21 @@ public class MainActivity extends AppCompatActivity
                 Exception error = result.getError();
                 Log.d("crop error", error.getMessage());
             }
+        } else if (requestCode == MainBottomSheetFragment.REQUEST_IMAGE_CAPTURE && resultCode ==
+                RESULT_OK) {
+
+            String historyFilesDirName = Environment.getExternalStorageDirectory() + "/" + "Pictures"
+                    + "/" + "wallhistory";
+
+            //String capturedDir = get
+           // Log.d("path" , capturedDir);
+
+            Uri capturedImageUri = (Uri) data.getExtras().get("data");
+
+            Intent sendImageIntent = new Intent(MainActivity.this, SendImageActivity
+                    .class);
+//            sendImageIntent.putExtra("imageUri", capturedImageUri);
+//            startActivity(sendImageIntent);
         }
     }
 
