@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.design.widget.BottomSheetBehavior;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,10 +16,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.zapps.yourwallpaper.HistoryAdapter;
 import com.zapps.yourwallpaper.HistoryItem;
 import com.zapps.yourwallpaper.R;
+import com.zapps.yourwallpaper.fragments.MainBottomSheetFragment;
 import com.zapps.yourwallpaper.services.NewPictureService;
 
 import java.io.File;
@@ -35,9 +38,10 @@ public class MainActivity extends AppCompatActivity
     @BindView(R.id.recycler_history) RecyclerView recyclerView;
     @BindView(R.id.btn_new_wallpaper) Button newWallpaperButton;
     @BindView(R.id.iv_my_wallpaper) ImageView myWallpaperImage;
+    @BindView(R.id.rl_bottom_sheet) RelativeLayout bottomSheet;
 
     HistoryAdapter adapter;
-
+    BottomSheetBehavior bottomBehavior;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,6 +68,9 @@ public class MainActivity extends AppCompatActivity
         Drawable myWallpaper = wallpaperManager.getDrawable();
 
         myWallpaperImage.setImageDrawable(myWallpaper);
+
+        bottomBehavior = BottomSheetBehavior.from(bottomSheet);
+        bottomBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
     }
 
 
@@ -113,8 +120,13 @@ public class MainActivity extends AppCompatActivity
 
     @OnClick(R.id.btn_new_wallpaper)
     public void showSelectDialog(View v) {
-        Intent intent = new Intent(MainActivity.this, SendImageActivity.class);
-        startActivity(intent);
+
+        MainBottomSheetFragment bottomSheet = new MainBottomSheetFragment();
+        bottomSheet.show(getSupportFragmentManager(), bottomSheet.getTag());
+   //     bottomBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+
+//        Intent intent = new Intent(MainActivity.this, SendImageActivity.class);
+//        startActivity(intent);
     }
 
     @Override
@@ -122,4 +134,12 @@ public class MainActivity extends AppCompatActivity
         super.onActivityResult(requestCode, resultCode, data);
     }
 
+    @Override
+    public void onBackPressed() {
+        if (bottomBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
+            bottomBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+        } else {
+            super.onBackPressed();
+        }
+    }
 }

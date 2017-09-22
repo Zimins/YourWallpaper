@@ -1,133 +1,149 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:layout_height="match_parent">
 
-    <ScrollView
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:id="@+id/scrollview"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintVertical_bias="1.0">
 
-        <android.support.constraint.ConstraintLayout
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
-            <TextView
-                android:id="@+id/tv_main_messege"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="8dp"
-                android:text="@string/main_messege"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginTop="16dp"
-                app:layout_constraintTop_toTopOf="parent" />
+        <ScrollView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:id="@+id/scrollview"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintVertical_bias="1.0">
 
-            <ImageView
-                android:id="@+id/iv_partner_wallpaper"
-                android:layout_width="160dp"
-                android:layout_height="264dp"
-                android:layout_marginStart="24dp"
-                android:background="@drawable/shape_dotted_box"
-                android:layerType="software"
-                app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginTop="36dp"
-                app:layout_constraintTop_toBottomOf="@+id/tv_main_messege" />
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-            <ImageView
-                android:id="@+id/iv_my_wallpaper"
-                android:src="@drawable/shape_dotted_box"
-                android:layout_width="160dp"
-                android:layout_height="264dp"
-                android:layout_marginEnd="24dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/iv_partner_wallpaper"
-                tools:layout_editor_absoluteX="202dp" />
+                <TextView
+                    android:id="@+id/tv_main_messege"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:text="@string/main_messege"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginTop="16dp"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/tv_history"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:text="@string/main_history"
-                app:layout_constraintTop_toBottomOf="@+id/iv_partner_wallpaper"
-                app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginStart="16dp" />
+                <ImageView
+                    android:id="@+id/iv_partner_wallpaper"
+                    android:layout_width="160dp"
+                    android:layout_height="264dp"
+                    android:layout_marginStart="24dp"
+                    android:background="@drawable/shape_dotted_box"
+                    android:layerType="software"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginTop="36dp"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_main_messege" />
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recycler_history"
-                android:layout_width="397dp"
-                android:layout_height="163dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:clipToPadding="false"
-                android:paddingEnd="100dp"
-                android:paddingStart="100dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_history"
-                tools:listitem="@layout/item_history"
-                tools:orientation="horizontal" />
+                <ImageView
+                    android:id="@+id/iv_my_wallpaper"
+                    android:src="@drawable/shape_dotted_box"
+                    android:layout_width="160dp"
+                    android:layout_height="264dp"
+                    android:layout_marginEnd="24dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/iv_partner_wallpaper"
+                    tools:layout_editor_absoluteX="202dp" />
 
-            <TextView
-                android:id="@+id/tv_partner_wallpaper"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/main_partner_wallpaper"
-                android:layout_marginBottom="8dp"
-                app:layout_constraintBottom_toTopOf="@+id/iv_partner_wallpaper"
-                app:layout_constraintStart_toStartOf="@+id/iv_partner_wallpaper"
-                android:layout_marginStart="8dp" />
+                <TextView
+                    android:id="@+id/tv_history"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:text="@string/main_history"
+                    app:layout_constraintTop_toBottomOf="@+id/iv_partner_wallpaper"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginStart="16dp" />
 
-            <TextView
-                android:id="@+id/tv_my_wallpaper"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/main_my_wallpaper"
-                android:layout_marginBottom="8dp"
-                app:layout_constraintBottom_toTopOf="@+id/iv_my_wallpaper"
-                app:layout_constraintStart_toStartOf="@+id/iv_my_wallpaper"
-                android:layout_marginStart="8dp" />
-        </android.support.constraint.ConstraintLayout>
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recycler_history"
+                    android:layout_width="397dp"
+                    android:layout_height="163dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:clipToPadding="false"
+                    android:paddingEnd="100dp"
+                    android:paddingStart="100dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_history"
+                    tools:listitem="@layout/item_history"
+                    tools:orientation="horizontal" />
+
+                <TextView
+                    android:id="@+id/tv_partner_wallpaper"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/main_partner_wallpaper"
+                    android:layout_marginBottom="8dp"
+                    app:layout_constraintBottom_toTopOf="@+id/iv_partner_wallpaper"
+                    app:layout_constraintStart_toStartOf="@+id/iv_partner_wallpaper"
+                    android:layout_marginStart="8dp" />
+
+                <TextView
+                    android:id="@+id/tv_my_wallpaper"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/main_my_wallpaper"
+                    android:layout_marginBottom="8dp"
+                    app:layout_constraintBottom_toTopOf="@+id/iv_my_wallpaper"
+                    app:layout_constraintStart_toStartOf="@+id/iv_my_wallpaper"
+                    android:layout_marginStart="8dp" />
+            </android.support.constraint.ConstraintLayout>
 
 
-    </ScrollView>
+        </ScrollView>
 
-    <Button
-        android:id="@+id/btn_new_wallpaper"
-        android:text="@string/main_send_picture"
+        <Button
+            android:id="@+id/btn_new_wallpaper"
+            android:text="@string/main_send_picture"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="0dp"
+            tools:layout_editor_absoluteX="0dp"
+            android:background="@color/colorPrimary"
+            app:layout_constraintBottom_toBottomOf="@+id/scrollview"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+
+
+    </android.support.constraint.ConstraintLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_bottom_sheet"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="0dp"
-        tools:layout_editor_absoluteX="0dp"
-        android:background="@color/colorPrimary"
-        app:layout_constraintBottom_toBottomOf="@+id/scrollview"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-
-
-</android.support.constraint.ConstraintLayout>
+        android:layout_height="100dp"
+        android:background="@color/colorAccent"
+        app:behavior_hideable="true"
+        app:behavior_peekHeight="200dp"
+        app:layout_behavior="@string/bottom_sheet_behavior">
+    </RelativeLayout>
+</android.support.design.widget.CoordinatorLayout>
 
 
 
