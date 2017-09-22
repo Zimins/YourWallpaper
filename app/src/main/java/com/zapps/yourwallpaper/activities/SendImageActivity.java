@@ -31,6 +31,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.zapps.yourwallpaper.Constants;
 import com.zapps.yourwallpaper.R;
@@ -58,6 +59,8 @@ public class SendImageActivity extends AppCompatActivity
 
     private PrefLib prefLib;
 
+    private Intent intent;
+
     // TODO: 2017. 9. 21. image 보낼때 progressbar
     // TODO: 2017. 9. 21. 보내고 나서 액티비티 종료하기  혹은 누르자 마자 종료하기 (ex: notibar 사용)
     // TODO: 2017. 9. 21. 서버에 올라갈 파일 이름 정하기
@@ -72,6 +75,8 @@ public class SendImageActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        intent = getIntent();
+
         prefLib = PrefLib.getInstance(SendImageActivity.this);
 
         selectedImage = findViewById(R.id.iv_selected_image);
@@ -79,7 +84,14 @@ public class SendImageActivity extends AppCompatActivity
 
         bottomNavigation.setOnNavigationItemSelectedListener(this);
 
-        loadImageFromGallery();
+        if (intent.hasExtra("imageUri")) {
+            Log.d("sendimageact", "setImageUri");
+            Picasso.with(this).load((Uri)intent.getExtras().get("imageUri")).into(selectedImage);
+        } else if (intent.hasExtra("imageBitmap")) {
+            selectedImage.setImageBitmap((Bitmap) intent.getExtras().get("imageBitmap"));
+        }
+
+        //loadImageFromGallery();
     }
 
     @Override
@@ -98,6 +110,12 @@ public class SendImageActivity extends AppCompatActivity
                         public void onDataChange(DataSnapshot dataSnapshot) {
 
                             byte[] imageData = getDataFromImageView(selectedImage);
+
+                            if(!prefLib.getBoolean(Constants.KEY_ISCOUPLE, false)) {
+                                Toast.makeText(SendImageActivity.this, "you are not couple!",
+                                        Toast.LENGTH_SHORT).show();
+                                return;
+                            }
 
                             String mateKey = dataSnapshot
                                     .child(prefLib.getString(Constants.KEY_USERID, ""))
@@ -135,7 +153,6 @@ public class SendImageActivity extends AppCompatActivity
         uploadTask.addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
-                // Handle unsuccessful uploads
                 // todo 업로드 실패 메시지 제공하기
             }
         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -241,6 +258,19 @@ public class SendImageActivity extends AppCompatActivity
     }
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int itemId = item.getItemId();
+
+        switch (itemId) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     @SuppressLint("NewApi")
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -274,7 +304,6 @@ public class SendImageActivity extends AppCompatActivity
                         e.printStackTrace();
                     }
 
-                    //selectedImage.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
                     selectedImage.bringToFront();
 
                 }

@@ -41,6 +41,10 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
         items.add(item);
     }
 
+    public void clearItems() {
+        items.clear();
+    }
+
     @Override
     public int getItemCount() {
         return items.size();

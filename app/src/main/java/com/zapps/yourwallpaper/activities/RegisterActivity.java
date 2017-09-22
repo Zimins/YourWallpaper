@@ -45,7 +45,6 @@ public class RegisterActivity extends AppCompatActivity {
         database = FirebaseDatabase.getInstance();
         reference = database.getReference("users");
 
-        // TODO: 2017. 9. 11. id 의 스타일을 통일시킬것
         confirmButton = findViewById(R.id.button_confirm);
         nicknameInput = findViewById(R.id.input_nickname);
         userNumInput = findViewById(R.id.input_my_number);

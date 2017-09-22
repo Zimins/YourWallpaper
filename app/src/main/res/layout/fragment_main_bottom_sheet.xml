@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:layout_editor_absoluteX="0dp"
+    tools:layout_editor_absoluteY="25dp">
+
+
+    <TextView
+        android:id="@+id/tv_bs_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:text="select way"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <LinearLayout
+        android:id="@+id/layout_gallery"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:layout_marginStart="72dp"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_bs_title">
+
+        <ImageView
+            android:id="@+id/iv_gallery"
+            android:layout_width="44dp"
+            android:layout_height="45dp"
+            android:src="@drawable/ic_menu_gallery" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="from gallery"
+            tools:layout_editor_absoluteX="59dp"
+            tools:layout_editor_absoluteY="91dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_camera"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="72dp"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/layout_gallery">
+
+
+        <ImageView
+            android:id="@+id/iv_camera"
+            android:layout_width="38dp"
+            android:layout_height="45dp"
+            android:src="@drawable/ic_menu_camera"
+            tools:layout_editor_absoluteX="209dp"
+            tools:layout_editor_absoluteY="46dp" />
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="from camera"
+            tools:layout_editor_absoluteX="247dp"
+            tools:layout_editor_absoluteY="91dp" />
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>
