@@ -17,8 +17,6 @@ import com.zapps.yourwallpaper.vo.User;
 
 public class CoupleDetectService extends Service implements ChildEventListener{
 
-    // TODO: 2017. 9. 18. modify class name
-
     String userPhone;
     String partnerPhone;
     String userKey;

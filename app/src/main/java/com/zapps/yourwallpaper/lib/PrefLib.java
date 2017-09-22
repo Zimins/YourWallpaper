@@ -23,6 +23,10 @@ public class PrefLib {
         pref = context.getSharedPreferences(KEY_PREFERENCE, Context.MODE_PRIVATE);
     }
 
+    public SharedPreferences getPref() {
+        return pref;
+    }
+
     public void putString(String key, String value) {
         SharedPreferences.Editor editor = pref.edit();
         editor.putString(key, value);

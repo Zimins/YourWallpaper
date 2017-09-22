@@ -23,13 +23,13 @@ import com.zapps.yourwallpaper.lib.PrefLib;
 public class SettingsFragment extends PreferenceFragmentCompat implements SharedPreferences
         .OnSharedPreferenceChangeListener {
 
-    // TODO: 2017. 9. 18. 계정 정보 설정 추가
-
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         addPreferencesFromResource(R.xml.pref_yourwallpaper);
 
-        final SharedPreferences sharedPreferences = getPreferenceScreen().getSharedPreferences();
+        //final SharedPreferences sharedPreferences = getPreferenceScreen().getSharedPreferences();
+        final SharedPreferences sharedPreferences = PrefLib.getInstance(getContext()).getPref();
+
         PreferenceScreen preferenceScreen = getPreferenceScreen();
 
         int count = preferenceScreen.getPreferenceCount();
@@ -48,8 +48,6 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
             @Override
             public boolean onPreferenceClick(Preference preference) {
 
-                // TODO: 2017. 9. 19. remove firebase data and sharedpreference
-                // TODO: 2017. 9. 19. move to first screeen
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.clear();
                 editor.apply();
@@ -77,7 +75,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
 
         if (preference != null) {
             if (!(preference instanceof CheckBoxPreference)) {
-                String value = sharedPreferences.getString(s, "");
+                String value = sharedPreferences.getString(s, "현재 정보가 없습니다.");
                 setPreferenceSummary(preference, value);
             }
         }

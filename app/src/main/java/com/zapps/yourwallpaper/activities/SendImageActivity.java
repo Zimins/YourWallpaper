@@ -65,7 +65,6 @@ public class SendImageActivity extends AppCompatActivity
     // TODO: 2017. 9. 21. 보내고 나서 액티비티 종료하기  혹은 누르자 마자 종료하기 (ex: notibar 사용)
     // TODO: 2017. 9. 21. 서버에 올라갈 파일 이름 정하기
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -138,7 +137,6 @@ public class SendImageActivity extends AppCompatActivity
 
         // TODO: 2017. 9. 12. configure file name 무엇으로 정해야 다수의 사용자가 편하게 ?
         // TODO: 2017. 9. 18. 히스토리를 서버에 유지 할지 말지
-        // TODO: 2017. 9. 12. configure file directory
 
         String filename = "test.jpg";
 
@@ -153,7 +151,7 @@ public class SendImageActivity extends AppCompatActivity
         uploadTask.addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
-                // todo 업로드 실패 메시지 제공하기
+                Toast.makeText(SendImageActivity.this, "Upload Fail!", Toast.LENGTH_LONG).show();
             }
         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
@@ -164,7 +162,6 @@ public class SendImageActivity extends AppCompatActivity
                 Uri downloadUrl = taskSnapshot.getDownloadUrl();
                 partnerReference.child("url").setValue(downloadUrl.toString());
 
-                // TODO: 2017. 9. 18. to string resource
                 Toast.makeText(SendImageActivity.this, "upload done", Toast.LENGTH_SHORT)
                         .show();
 
@@ -275,7 +272,6 @@ public class SendImageActivity extends AppCompatActivity
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        // TODO: 2017. 9. 18. request 여러개일때 상황 생각하기
         if (requestCode == REQUEST_LOAD_IMAGE) {
 
             if (resultCode == RESULT_OK) {

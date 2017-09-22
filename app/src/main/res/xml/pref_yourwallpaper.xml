@@ -2,16 +2,22 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
         <EditTextPreference
-            android:key="key_user_name"
+            android:key="nickname"
             android:title="User Name"
             android:defaultValue="andy"
             android:summary="andy"/>
 
         <EditTextPreference
-            android:key="key_mate_name"
-            android:title="Name of mate"
-            android:defaultValue="andy"
-            android:summary="andy"/>
+            android:key="phoneNumber"
+            android:title="Phone of mine"
+            android:defaultValue="no number"
+            android:summary="0000"/>
+
+        <EditTextPreference
+            android:key="partnerNumber"
+            android:title="Phone of mate"
+            android:defaultValue="no number"
+            android:summary="0000"/>
 
         <CheckBoxPreference
             android:title="notification"
@@ -19,12 +25,6 @@
             android:defaultValue="true"
             android:summaryOff="off"
             android:summaryOn="on"/>
-
-        <EditTextPreference
-            android:key="key_another_name"
-            android:title="User Name"
-            android:defaultValue="andy"
-            android:summary="andy"/>
 
         <Preference
             android:key="key_logout"
