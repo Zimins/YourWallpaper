@@ -30,9 +30,13 @@ import butterknife.OnClick;
 public class MainActivity extends AppCompatActivity
         implements View.OnClickListener {
 
+    // TODO: 2017. 9. 21. 권한 앱 시작시에 받기
+
     @BindView(R.id.recycler_history) RecyclerView recyclerView;
     @BindView(R.id.btn_new_wallpaper) Button newWallpaperButton;
     @BindView(R.id.iv_my_wallpaper) ImageView myWallpaperImage;
+
+    HistoryAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,20 +51,7 @@ public class MainActivity extends AppCompatActivity
         Intent intent = new Intent(MainActivity.this, NewPictureService.class);
         startService(intent);
 
-        HistoryAdapter adapter = new HistoryAdapter(MainActivity.this);
-
-        // 디렉터리가 없다면 ?
-        String historyFilesDirName = Environment.getExternalStorageDirectory() + "/" + "Pictures"
-                + "/" + "wallhistory";
-        Log.d("path" , historyFilesDirName);
-
-        File historyDir = new File(historyFilesDirName);
-        File[] historyImages = historyDir.listFiles();
-
-        for (File image : historyImages) {
-            adapter.addItem(new HistoryItem(image, image.getName()));
-        }
-
+        adapter = new HistoryAdapter(MainActivity.this);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this,
                 LinearLayoutManager.HORIZONTAL, false);
@@ -72,6 +63,28 @@ public class MainActivity extends AppCompatActivity
         Drawable myWallpaper = wallpaperManager.getDrawable();
 
         myWallpaperImage.setImageDrawable(myWallpaper);
+    }
+
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // TODO: 2017. 9. 21. 새로 보낼때 갱신하기 (지금 2배씩 늘어남)
+        loadImagesFromDisk(adapter);
+    }
+
+    private void loadImagesFromDisk(HistoryAdapter adapter) {
+        String historyFilesDirName = Environment.getExternalStorageDirectory() + "/" + "Pictures"
+                + "/" + "wallhistory";
+        Log.d("path" , historyFilesDirName);
+
+        File historyDir = new File(historyFilesDirName);
+        File[] historyImages = historyDir.listFiles();
+
+        for (File image : historyImages) {
+            adapter.addItem(new HistoryItem(image, image.getName()));
+        }
     }
 
     @Override

@@ -58,6 +58,11 @@ public class SendImageActivity extends AppCompatActivity
 
     private PrefLib prefLib;
 
+    // TODO: 2017. 9. 21. image 보낼때 progressbar
+    // TODO: 2017. 9. 21. 보내고 나서 액티비티 종료하기  혹은 누르자 마자 종료하기 (ex: notibar 사용)
+    // TODO: 2017. 9. 21. 서버에 올라갈 파일 이름 정하기
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -23,6 +23,7 @@ import java.io.IOException;
 
 public class NewPictureService extends Service {
 
+    // TODO: 2017. 9. 21. file 받으면 히스토리에 저장 ? 안저장 ?
     PrefLib prefLib;
 
     //GC 때문에 클래스 변수로 선언
