@@ -31,6 +31,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.zapps.yourwallpaper.Constants;
 import com.zapps.yourwallpaper.R;
@@ -58,6 +59,8 @@ public class SendImageActivity extends AppCompatActivity
 
     private PrefLib prefLib;
 
+    private Intent intent;
+
     // TODO: 2017. 9. 21. image 보낼때 progressbar
     // TODO: 2017. 9. 21. 보내고 나서 액티비티 종료하기  혹은 누르자 마자 종료하기 (ex: notibar 사용)
     // TODO: 2017. 9. 21. 서버에 올라갈 파일 이름 정하기
@@ -72,6 +75,8 @@ public class SendImageActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        intent = getIntent();
+
         prefLib = PrefLib.getInstance(SendImageActivity.this);
 
         selectedImage = findViewById(R.id.iv_selected_image);
@@ -79,7 +84,10 @@ public class SendImageActivity extends AppCompatActivity
 
         bottomNavigation.setOnNavigationItemSelectedListener(this);
 
-        loadImageFromGallery();
+        Picasso.with(this).load((Uri)intent.getExtras().get("croppedImageUri")).into
+                (selectedImage);
+
+        //loadImageFromGallery();
     }
 
     @Override
@@ -274,7 +282,6 @@ public class SendImageActivity extends AppCompatActivity
                         e.printStackTrace();
                     }
 
-                    //selectedImage.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
                     selectedImage.bringToFront();
 
                 }
