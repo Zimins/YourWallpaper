@@ -22,8 +22,3 @@ https://goo.gl/dLe8SF
 * retrofit
 * butterknife
 
-TODO//
-* firebase 연결 예정 
-* 서버를 통한 사진 혹은 메시지 전달 
-* 새로운 데이터가 왔음을 앱에서 알림 
-* 왔을때 바로 설정할 것인가 ? 아니면 동의하고 설정할 것인가 ?
